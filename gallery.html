@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>그림으로 보는 Boost One | Kakao Boost One 사례</title>
+  <style>
+    :root { --ink:#191919; --muted:#5f636b; --line:#e3e3e0; --paper:#f8f7f3; --yellow:#fee500; --brown:#3c1e1e; --blue:#1f6fff; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 120px; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif; word-break: keep-all; line-height:1.55; }
+    a { color: inherit; }
+    .shell { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
+    .nav { position: sticky; top:0; z-index:10; background: rgba(248,247,243,.94); backdrop-filter: blur(14px); border-bottom:1px solid var(--line); }
+    .nav-top { display:flex; justify-content:space-between; align-items:center; height:56px; }
+    .brand { font-weight:900; letter-spacing:.08em; font-size:13px; text-transform:uppercase; text-decoration:none; }
+    .nav-top a.back { font-size:13px; font-weight:800; text-decoration:none; padding:8px 14px; border-radius:999px; background:var(--ink); color:#fff; }
+    .pills { display:flex; gap:6px; overflow-x:auto; padding: 0 0 10px; }
+    .pills a { flex:none; font-size:12.5px; font-weight:800; text-decoration:none; padding:6px 11px; border-radius:999px; background:#fff; border:1px solid var(--line); }
+    .pills a:hover { background: var(--yellow); }
+    header.hero { padding: 48px 0 24px; }
+    h1 { margin:0; font-size: clamp(32px, 5vw, 56px); letter-spacing:-.04em; line-height:1.1; }
+    .lede { color:var(--muted); margin:14px 0 0; max-width: 820px; }
+    .gch { background:#fff; border:1px solid var(--line); border-radius:20px; padding:26px; margin: 22px 0; }
+    .gch-head { position:relative; margin-bottom: 8px; }
+    .gch-head .no { font-size:12px; font-weight:900; color:#8a7a00; letter-spacing:.06em; }
+    .gch-head h2 { margin:4px 0 6px; font-size:26px; letter-spacing:-.03em; }
+    .gch-head p { margin:0; color:#3f4248; font-size:14.5px; max-width: 860px; }
+    .gch-head p a { color: var(--blue); text-decoration:none; font-weight:700; }
+    .gch-head .cnt { position:absolute; top:0; right:0; font-size:12px; font-weight:800; background:var(--yellow); color:var(--brown); padding:4px 10px; border-radius:999px; }
+    h3 { margin: 26px 0 12px; font-size:17px; padding-left:10px; border-left:4px solid var(--yellow); }
+    h3 a { text-decoration:none; }
+    .ggrid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    figure { margin:0; }
+    figure img { width:100%; height:auto; display:block; border-radius:12px; border:1px solid var(--line); background:#fff; }
+    figcaption { margin-top:8px; font-size:13px; }
+    figcaption b { display:block; font-size:14px; }
+    figcaption span { color: var(--muted); }
+    a.zoom { cursor: zoom-in; display:block; }
+    .lb { position:fixed; inset:0; background:rgba(10,10,10,.88); display:none; align-items:center; justify-content:center; flex-direction:column; z-index:50; padding:24px; }
+    .lb.on { display:flex; }
+    .lb img { max-width:min(1500px,96vw); max-height:84vh; border-radius:10px; background:#fff; cursor: zoom-out; }
+    .lb p { color:#fff; margin:12px 0 0; font-size:14px; }
+    .lb button { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.15); color:#fff; border:0; width:48px; height:64px; font-size:28px; border-radius:10px; cursor:pointer; }
+    .lb .prev { left:14px; } .lb .next { right:14px; }
+    footer { color:var(--muted); font-size:13px; padding: 20px 0 50px; }
+    @media (max-width: 900px) { .ggrid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .ggrid { grid-template-columns: 1fr; } .gch-head .cnt { position:static; display:inline-block; margin-top:8px; } }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div class="shell">
+      <div class="nav-top"><a class="brand" href="index.html">Kakao Boost One · 그림으로 보기</a><a class="back" href="index.html">← 사례 페이지</a></div>
+      <nav class="pills">
+        <a href="#g-start">01 시작하기</a>
+        <a href="#g-settings">02 설정</a>
+        <a href="#g-works">03 업무 탭</a>
+        <a href="#g-board">04 작업 보드</a>
+        <a href="#g-feed">05 피드</a>
+        <a href="#g-calendar">06 캘린더</a>
+        <a href="#g-meeting">07 회의록</a>
+        <a href="#g-rules">08 자동 규칙</a>
+        <a href="#g-viking">09 바이킹 탭</a>
+        <a href="#g-remote">10 카카오워크로 원격 제어</a>
+        <a href="#g-market">11 마켓</a>
+      </nav>
+    </div>
+  </div>
+  <main class="shell">
+    <header class="hero">
+      <h1>그림으로 보는 Boost One</h1>
+      <p class="lede">「Boost One 사용 가이드」의 그림 223장을 장·절 순서대로 모았습니다. 그림 아래에는 원문 가이드의 해당 단계 설명을 붙였습니다. 그림을 누르면 크게 보이고, 화살표 키(← →)로 넘길 수 있습니다. 그림 속 이름·대화·일정은 모두 예시 데이터입니다.</p>
+    </header>
+    <section class="gch" id="g-start">
+      <div class="gch-head"><div class="no">01 시작하기</div><h2>첫 실행과 화면 구성</h2><p>로그인·확장·알림 안내, 아이콘 줄과 사이드챗, 연결 끊김 띠, 업데이트, 다크 테마. <a href="guide/boost-one-guide.html#page-start">원문 설명 보기 →</a></p><span class="cnt">그림 17장</span></div>
+      <h3><a href="guide/boost-one-guide.html#start--s-%EC%B2%98%EC%9D%8C-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0">처음 실행하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/start-01.webp" class="zoom" data-cap="01 시작하기 · KB 로그인 화면"><img src="assets/img/start-01.webp" width="1600" height="1000" alt="KB 로그인 화면" loading="lazy" /></a><figcaption><b>KB 로그인 화면</b><span>「KB 계정으로 로그인」을 누릅니다. 앱은 사내 KB 계정 하나로 로그인합니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-02.webp" class="zoom" data-cap="01 시작하기 · 브라우저 로그인을 기다리는 화면"><img src="assets/img/start-02.webp" width="1600" height="1000" alt="브라우저 로그인을 기다리는 화면" loading="lazy" /></a><figcaption><b>브라우저 로그인을 기다리는 화면</b><span>기본 브라우저에 로그인 화면이 열립니다. 브라우저에서 로그인을 마치면 앱이 저절로 다음 화면으로 넘어갑니다. 기다리는 동안 단추 아래에 「브라우저에서 KB 로그인을 마치세요.」가 보입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-03.webp" class="zoom" data-cap="01 시작하기 · 브라우저 확장 설치 안내"><img src="assets/img/start-03.webp" width="1600" height="1000" alt="브라우저 확장 설치 안내" loading="lazy" /></a><figcaption><b>브라우저 확장 설치 안내</b><span>「브라우저 확장을 설치해 주세요」 상자가 뜨면 「Chrome 웹스토어에서 추가」를 누릅니다. 웹스토어에서 확장을 추가하면 앱과 자동으로 연결됩니다. 지금 하지 않으려면 「나중에」를 누릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-04.webp" class="zoom" data-cap="01 시작하기 · 업데이트 노트 상자"><img src="assets/img/start-04.webp" width="1600" height="1000" alt="업데이트 노트 상자" loading="lazy" /></a><figcaption><b>업데이트 노트 상자</b><span>「업데이트 노트」 상자가 뜨면 이번 버전에서 바뀐 점을 읽고 「확인」을 누릅니다. 새 버전을 처음 열 때마다 한 번 뜹니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-05.webp" class="zoom" data-cap="01 시작하기 · 알림 켜기 안내"><img src="assets/img/start-05.webp" width="1600" height="1000" alt="알림 켜기 안내" loading="lazy" /></a><figcaption><b>알림 켜기 안내</b><span>「알림을 켜 주세요」 상자가 뜨면 안내된 순서대로 시스템 설정에서 Boost One 알림을 켭니다. 「알림 설정 열기」를 누르면 시스템 설정의 알림 화면이 바로 열립니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#start--s-%ED%99%94%EB%A9%B4-%EA%B5%AC%EC%84%B1-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0">화면 구성 알아보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/start-06.webp" class="zoom" data-cap="01 시작하기 · 앱 전체 화면"><img src="assets/img/start-06.webp" width="1600" height="1000" alt="앱 전체 화면" loading="lazy" /></a><figcaption><b>앱 전체 화면</b><span>화면은 왼쪽 아이콘 줄(①), 가운데 작업 화면, 오른쪽 사이드챗으로 나뉩니다. 왼쪽 아래 톱니(②)는 설정을 엽니다. 오른쪽 위 패널 아이콘(③)으로 사이드챗을 열고 닫습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-07.webp" class="zoom" data-cap="01 시작하기 · 피드 아이콘에 올렸을 때 나오는 자동 규칙 단추"><img src="assets/img/start-07.webp" width="840" height="800" alt="피드 아이콘에 올렸을 때 나오는 자동 규칙 단추" loading="lazy" /></a><figcaption><b>피드 아이콘에 올렸을 때 나오는 자동 규칙 단추</b><span>아이콘에 마우스를 올리면 옆에 두 번째 단추가 나타납니다. 「피드」 옆은 「자동 규칙」, 「업무」 옆은 「작업 보드」, 「캘린더」 옆은 「회의록」입니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#start--s-%EC%82%AC%EC%9D%B4%EB%93%9C%EC%B1%97-%EC%93%B0%EA%B8%B0">사이드챗 쓰기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/start-08.webp" class="zoom" data-cap="01 시작하기 · 사이드챗 대화 바꾸기"><img src="assets/img/start-08.webp" width="1600" height="1000" alt="사이드챗 대화 바꾸기" loading="lazy" /></a><figcaption><b>사이드챗 대화 바꾸기</b><span>사이드챗 머리의 이름(①, 처음에는 「비서」)을 누르면 대화를 바꾸는 목록이 열립니다. 「새 요청」으로 새 대화를 시작하거나, 「비서」나 진행 중인 요청을 골라 이어 갑니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#start--s-%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8%ED%95%98%EA%B8%B0">업데이트하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/start-09.webp" class="zoom" data-cap="01 시작하기 · 업데이트 아이콘"><img src="assets/img/start-09.webp" width="1600" height="1000" alt="업데이트 아이콘" loading="lazy" /></a><figcaption><b>업데이트 아이콘</b><span>새 버전이 나오면 왼쪽 아래 톱니 위에 업데이트 아이콘(①)이 나타납니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-10.webp" class="zoom" data-cap="01 시작하기 · 새 버전 노트"><img src="assets/img/start-10.webp" width="1600" height="1000" alt="새 버전 노트" loading="lazy" /></a><figcaption><b>새 버전 노트</b><span>아이콘을 누르면 새 버전에서 바뀐 점이 뜹니다. 「설치」를 누르면 바로 설치하고, 「나중에」를 누르면 상자만 닫습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-11.webp" class="zoom" data-cap="01 시작하기 · 설정의 버전 줄"><img src="assets/img/start-11.webp" width="1600" height="1000" alt="설정의 버전 줄" loading="lazy" /></a><figcaption><b>설정의 버전 줄</b><span>설정에서 직접 확인할 수도 있습니다. 설정 › 「일반」의 「버전」 줄에서 「업데이트 확인」(①)을 누르면 최신인지, 새 버전이 있는지 한 줄로 알려 줍니다. 새 버전이 있으면 단추가 「설치」로 바뀝니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#start--s-%EC%97%B0%EA%B2%B0%EC%9D%B4-%EB%81%8A%EA%B2%BC%EB%8B%A4%EB%8A%94-%EB%9D%A0%EA%B0%80-%EB%9C%B0-%EB%95%8C">연결이 끊겼다는 띠가 뜰 때</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/start-12.webp" class="zoom" data-cap="01 시작하기 · 서버 연결 끊김 띠"><img src="assets/img/start-12.webp" width="1600" height="1000" alt="서버 연결 끊김 띠" loading="lazy" /></a><figcaption><b>서버 연결 끊김 띠</b><span>「Boost One 서버와 연결이 끊겨 마지막으로 받은 내용을 보여 줍니다.」(①)는 앱 안의 서버와 연결이 끊긴 상태입니다. 「다시 연결」을 누릅니다. 이 동안 피드·업무처럼 서버가 있어야 하는 아이콘은 왼쪽 줄에서 잠시 빠집니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-13.webp" class="zoom" data-cap="01 시작하기 · 확장 연결 끊김 띠"><img src="assets/img/start-13.webp" width="1600" height="1000" alt="확장 연결 끊김 띠" loading="lazy" /></a><figcaption><b>확장 연결 끊김 띠</b><span>「브라우저 확장이 연결되지 않았으니 Chrome 을 켜 두세요.」(①)는 Chrome 확장과 연결이 끊긴 상태입니다. Chrome 을 켠 뒤 「다시 확인」을 누릅니다. 확장이 없으면 「확장 설치」를 누릅니다. 띠를 닫았다면 왼쪽 아래 아이콘(②)을 눌러 다시 띄울 수 있습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-14.webp" class="zoom" data-cap="01 시작하기 · 확장 업데이트 아이콘"><img src="assets/img/start-14.webp" width="1600" height="1000" alt="확장 업데이트 아이콘" loading="lazy" /></a><figcaption><b>확장 업데이트 아이콘</b><span>왼쪽 아래에 퍼즐 모양 아이콘(①)이 보이면 Chrome 확장 버전이 앱보다 낮은 것입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-15.webp" class="zoom" data-cap="01 시작하기 · 확장 업데이트 안내"><img src="assets/img/start-15.webp" width="1600" height="1000" alt="확장 업데이트 안내" loading="lazy" /></a><figcaption><b>확장 업데이트 안내</b><span>아이콘을 누르면 「확장 업데이트가 필요합니다」 상자에 설치된 버전과 필요한 버전이 나옵니다. 「업데이트 방법」을 눌러 안내를 따르거나 「웹스토어 열기」로 새 버전을 받습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#start--s-%ED%85%8C%EB%A7%88-%EB%B0%94%EA%BE%B8%EA%B8%B0">테마 바꾸기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/start-16.webp" class="zoom" data-cap="01 시작하기 · 모양 설정"><img src="assets/img/start-16.webp" width="1600" height="1000" alt="모양 설정" loading="lazy" /></a><figcaption><b>모양 설정</b><span>「화면 테마」(①)에서 「시스템」·「라이트」·「다크」 중 하나를 고릅니다. 「시스템」은 컴퓨터 설정을 따릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/start-17.webp" class="zoom" data-cap="01 시작하기 · 다크 테마"><img src="assets/img/start-17.webp" width="1600" height="1000" alt="다크 테마" loading="lazy" /></a><figcaption><b>다크 테마</b><span>「다크」를 고르면 화면 전체가 어두운 색으로 바뀝니다.</span></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-settings">
+      <div class="gch-head"><div class="no">02 설정</div><h2>엔진·사용량·도구·권한</h2><p>Claude 사내 게이트웨이 연결, 엔진별 남은 한도와 회사 예산, 도구 켜고 끄기, 「항상 허용」 권한 회수, 지침 출처 선택. <a href="guide/boost-one-guide.html#page-settings">원문 설명 보기 →</a></p><span class="cnt">그림 23장</span></div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EC%84%A4%EC%A0%95-%ED%99%94%EB%A9%B4-%EB%91%98%EB%9F%AC%EB%B3%B4%EA%B8%B0">설정 화면 둘러보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-01.webp" class="zoom" data-cap="02 설정 · 설정 화면"><img src="assets/img/settings-01.webp" width="1600" height="1000" alt="설정 화면" loading="lazy" /></a><figcaption><b>설정 화면</b><span>왼쪽 아래 톱니를 눌러 설정을 엽니다. 위쪽에 「설정 검색」(①), 그 아래에 페이지 목록(②), 오른쪽에 고른 페이지의 내용(③)이 있습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EC%84%A4%EC%A0%95-%EC%B0%BE%EA%B8%B0">설정 찾기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-02.webp" class="zoom" data-cap="02 설정 · 설정 검색"><img src="assets/img/settings-02.webp" width="1600" height="1000" alt="설정 검색" loading="lazy" /></a><figcaption><b>설정 검색</b><span>「설정 검색」에 찾을 말을 칩니다. 예를 들어 「게이트웨이」를 치면 그 말이 들어 있는 페이지만 목록에 남고, 첫 페이지가 열립니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EA%B3%84%EC%A0%95%EA%B3%BC-%EC%8B%A4%ED%96%89-%EC%97%94%EC%A7%84-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0">계정과 실행 엔진 확인하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-03.webp" class="zoom" data-cap="02 설정 · 연결 페이지"><img src="assets/img/settings-03.webp" width="1600" height="1000" alt="연결 페이지" loading="lazy" /></a><figcaption><b>연결 페이지</b><span>그 아래 「실행 엔진」(②)에 Claude·Codex·KAP 이 한 장씩 있습니다. 카드마다 지금 상태(「사용 가능」·「설치 필요」·「로그인 필요」 등)와 다음에 할 일이 적혀 있습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-04.webp" class="zoom" data-cap="02 설정 · 실행 엔진 카드"><img src="assets/img/settings-04.webp" width="1600" height="1000" alt="실행 엔진 카드" loading="lazy" /></a><figcaption><b>실행 엔진 카드</b><span>상태가 오래돼 보이면 엔진 카드 오른쪽 새로 고침 아이콘으로 그 엔진만, 「실행 엔진」 머리의 새로 고침 아이콘(③)으로 셋 모두를 다시 확인합니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-Claude-%EB%A5%BC-%EC%82%AC%EB%82%B4-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4%EB%A1%9C-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0">Claude 를 사내 게이트웨이로 연결하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-05.webp" class="zoom" data-cap="02 설정 · 게이트웨이 연결 중"><img src="assets/img/settings-05.webp" width="1600" height="1000" alt="게이트웨이 연결 중" loading="lazy" /></a><figcaption><b>게이트웨이 연결 중</b><span>기본 브라우저에 사내 로그인 화면이 열립니다. 카드에는 「연결 중…」과 「브라우저에서 로그인을 끝내 주세요.」가 보입니다. 브라우저가 열리지 않으면 카드에 적힌 주소를 직접 엽니다. 그만두려면 「취소」를 누릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-06.webp" class="zoom" data-cap="02 설정 · 게이트웨이 연결 완료"><img src="assets/img/settings-06.webp" width="1600" height="1000" alt="게이트웨이 연결 완료" loading="lazy" /></a><figcaption><b>게이트웨이 연결 완료</b><span>브라우저에서 로그인을 마치면 Claude 카드가 「사내 게이트웨이」 「사용 가능」으로 바뀝니다. 별도로 Claude CLI 를 설치하지 않아도 됩니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-07.webp" class="zoom" data-cap="02 설정 · 팀플랜 카드와 팀 바꾸기"><img src="assets/img/settings-07.webp" width="1600" height="1000" alt="팀플랜 카드와 팀 바꾸기" loading="lazy" /></a><figcaption><b>팀플랜 카드와 팀 바꾸기</b><span>팀플랜으로 쓰는 경우 카드에 「&lt;팀&gt; 팀으로 사용 중」과 「팀 바꾸기」(①)가 보입니다. 다른 팀으로 쓰려면 「팀 바꾸기」를 누르고 브라우저에서 쓸 팀을 고른 뒤 승인합니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-Codex-%EC%84%A4%EC%B9%98%ED%95%98%EA%B3%A0-%EB%A1%9C%EA%B7%B8%EC%9D%B8%ED%95%98%EA%B8%B0">Codex 설치하고 로그인하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-08.webp" class="zoom" data-cap="02 설정 · Codex 로그인 필요"><img src="assets/img/settings-08.webp" width="1600" height="1000" alt="Codex 로그인 필요" loading="lazy" /></a><figcaption><b>Codex 로그인 필요</b><span>설치가 끝나 「로그인 필요」가 되면 「Codex 로그인」(①)을 누릅니다. 터미널에서 직접 하려면 카드에 적힌 codex login 명령을 복사해 써도 됩니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-09.webp" class="zoom" data-cap="02 설정 · Codex 로그인 중"><img src="assets/img/settings-09.webp" width="1600" height="1000" alt="Codex 로그인 중" loading="lazy" /></a><figcaption><b>Codex 로그인 중</b><span>브라우저에서 로그인을 마칩니다. 브라우저가 열리지 않으면 「브라우저가 안 열리면 이 주소를 여세요」 옆 주소를 엽니다. 그만두려면 「취소」를 누릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EC%82%AC%EC%9A%A9%EB%9F%89-%EB%B3%B4%EA%B8%B0">사용량 보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-10.webp" class="zoom" data-cap="02 설정 · 게이트웨이 예산과 한도 상향"><img src="assets/img/settings-10.webp" width="1600" height="1000" alt="게이트웨이 예산과 한도 상향" loading="lazy" /></a><figcaption><b>게이트웨이 예산과 한도 상향</b><span>예산을 80% 넘게 쓰면 줄 오른쪽에 「한도 상향」(①)이 나타납니다. 누르면 기본 브라우저로 한도 상향을 신청하는 사내 포털이 열립니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-11.webp" class="zoom" data-cap="02 설정 · 구독 한도"><img src="assets/img/settings-11.webp" width="1600" height="1000" alt="구독 한도" loading="lazy" /></a><figcaption><b>구독 한도</b><span>Claude 를 팀플랜(구독)으로 쓰면 회사 예산이 아니라 본인 구독 한도를 따릅니다. 「Claude 구독 · 5시간 한도」처럼 5시간·7일 한도 가운데 더 빠듯한 쪽이 막대로 보입니다. 숫자를 아직 못 읽었으면 막대 없이 「Claude 구독 한도를 따릅니다」만 보입니다. 이때는 「한도 상향」이 없습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-12.webp" class="zoom" data-cap="02 설정 · Bedrock 으로 쓸 때의 사용량"><img src="assets/img/settings-12.webp" width="1600" height="1000" alt="Bedrock 으로 쓸 때의 사용량" loading="lazy" /></a><figcaption><b>Bedrock 으로 쓸 때의 사용량</b><span>Claude 를 아직 Bedrock 으로 쓰면 「Bedrock 게이트웨이」 칸과 「Bedrock 사용 내역」이 함께 보입니다. 사내 게이트웨이로 옮기면 이 칸은 사라집니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-13.webp" class="zoom" data-cap="02 설정 · 도구 사용 현황"><img src="assets/img/settings-13.webp" width="1600" height="1000" alt="도구 사용 현황" loading="lazy" /></a><figcaption><b>도구 사용 현황</b><span>「도구 사용 현황」(위 그림 ①)을 누르면 날짜별 도구 호출 수와 도구별 호출 순위가 보입니다. 「일」·「주」·「월」 단위와 기간(7일·30일·전체)을 바꿔 볼 수 있습니다. 왼쪽 위 화살표로 사용량 페이지에 돌아갑니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EB%8F%84%EA%B5%AC-%EC%97%B0%EA%B2%B0-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0">도구 연결 확인하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-14.webp" class="zoom" data-cap="02 설정 · 도구 페이지"><img src="assets/img/settings-14.webp" width="1600" height="1000" alt="도구 페이지" loading="lazy" /></a><figcaption><b>도구 페이지</b><span>그 아래 「도구」(②)는 에이전트가 쓸 수 있는 도구 목록입니다. 오른쪽 스위치로 도구를 켜고 끕니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-15.webp" class="zoom" data-cap="02 설정 · 지라 설정 칸"><img src="assets/img/settings-15.webp" width="1600" height="1000" alt="지라 설정 칸" loading="lazy" /></a><figcaption><b>지라 설정 칸</b><span>키나 토큰이 필요한 도구는 줄의 「설정」을 누르면 바로 아래로 입력 칸이 펼쳐집니다. 값을 넣고 「저장」을 누릅니다. 책 모양 아이콘은 키를 받는 방법 안내입니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EC%B9%B4%EC%B9%B4%EC%98%A4%EC%9B%8C%ED%81%AC-%EC%97%B0%EB%8F%99-%EB%A1%9C%EA%B7%B8%EC%9D%B8%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8%ED%95%98%EA%B8%B0">카카오워크 연동 로그인·업데이트하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-16.webp" class="zoom" data-cap="02 설정 · 카카오워크 로그인 필요"><img src="assets/img/settings-16.webp" width="1600" height="1000" alt="카카오워크 로그인 필요" loading="lazy" /></a><figcaption><b>카카오워크 로그인 필요</b><span>카카오워크 로그인이 풀리면 「도구 연결」의 카카오워크 줄이 「로그인 필요」가 되고 「로그인」(①)이 나타납니다. 누르고 안내에 따라 다시 로그인합니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-17.webp" class="zoom" data-cap="02 설정 · 카카오워크 업데이트 있음"><img src="assets/img/settings-17.webp" width="1600" height="1000" alt="카카오워크 업데이트 있음" loading="lazy" /></a><figcaption><b>카카오워크 업데이트 있음</b><span>카카오워크 연동에 새 버전이 있으면 카카오워크 줄이 「업데이트 있음」과 지금 버전 → 새 버전으로 바뀌고, 설정 목록 「도구」 옆에 점이 뜹니다. 「업데이트 보기」(①)를 누릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-18.webp" class="zoom" data-cap="02 설정 · 카카오워크 업데이트 줄"><img src="assets/img/settings-18.webp" width="1600" height="1000" alt="카카오워크 업데이트 줄" loading="lazy" /></a><figcaption><b>카카오워크 업데이트 줄</b><span>도구 목록의 카카오워크 칸이 펼쳐지며 「카카오워크 업데이트」 줄로 이동합니다. 그 줄의 「업데이트」를 누릅니다. 기존 인증은 그대로 두고 실행 파일만 바꿉니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EB%8B%A4%EB%A5%B8-%EC%95%B1-%EC%A1%B0%EC%9E%91-%EC%BC%9C%EA%B8%B0">다른 앱 조작 켜기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-19.webp" class="zoom" data-cap="02 설정 · 다른 앱 조작"><img src="assets/img/settings-19.webp" width="1600" height="1000" alt="다른 앱 조작" loading="lazy" /></a><figcaption><b>다른 앱 조작</b><span>macOS 확인 창이 뜨면 그 창의 「시스템 설정 열기」로 들어가 목록에서 Boost One 을 켭니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EC%A7%80%EC%B9%A8-%EC%B6%9C%EC%B2%98-%EA%B3%A0%EB%A5%B4%EA%B8%B0">지침 출처 고르기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-20.webp" class="zoom" data-cap="02 설정 · 지침 출처"><img src="assets/img/settings-20.webp" width="1600" height="1000" alt="지침 출처" loading="lazy" /></a><figcaption><b>지침 출처</b><span>고른 파일 내용이 아래에 읽기 전용으로 보입니다. 내용을 고치려면 그 파일을 직접 고칩니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%ED%95%AD%EC%83%81-%ED%97%88%EC%9A%A9-%EA%B6%8C%ED%95%9C-%EB%B9%BC%EA%B8%B0">「항상 허용」 권한 빼기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-21.webp" class="zoom" data-cap="02 설정 · 항상 허용 목록"><img src="assets/img/settings-21.webp" width="1600" height="1000" alt="항상 허용 목록" loading="lazy" /></a><figcaption><b>항상 허용 목록</b><span>더는 허용하지 않을 줄의 「권한 빼기」를 누릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/settings-22.webp" class="zoom" data-cap="02 설정 · 권한 빼기 확인"><img src="assets/img/settings-22.webp" width="1600" height="1000" alt="권한 빼기 확인" loading="lazy" /></a><figcaption><b>권한 빼기 확인</b><span>확인 창에서 「권한 빼기」를 누릅니다. 다음부터 그 동작은 다시 승인을 묻습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#settings--s-%EA%B7%B8-%EB%B0%96%EC%9D%98-%ED%8E%98%EC%9D%B4%EC%A7%80">그 밖의 페이지</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/settings-23.webp" class="zoom" data-cap="02 설정 · 알림 페이지"><img src="assets/img/settings-23.webp" width="1600" height="1000" alt="알림 페이지" loading="lazy" /></a><figcaption><b>알림 페이지</b></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-works">
+      <div class="gch-head"><div class="no">03 업무 탭</div><h2>폴더 단위 에이전트 대화</h2><p>프로젝트 폴더를 골라 Claude·Codex·KAP 중 하나에게 일을 맡깁니다. 서브에이전트, 동료 초대, 터미널 대화 가져오기. <a href="guide/boost-one-guide.html#page-works">원문 설명 보기 →</a></p><span class="cnt">그림 27장</span></div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%ED%99%94%EB%A9%B4-%EB%91%98%EB%9F%AC%EB%B3%B4%EA%B8%B0">화면 둘러보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-01.webp" class="zoom" data-cap="03 업무 탭 · 업무 탭 전체 화면"><img src="assets/img/works-01.webp" width="1600" height="1000" alt="업무 탭 전체 화면" loading="lazy" /></a><figcaption><b>업무 탭 전체 화면</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EC%83%88-%EB%8C%80%ED%99%94%EB%A5%BC-%EC%97%BD%EB%8B%88%EB%8B%A4">새 대화를 엽니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-02.webp" class="zoom" data-cap="03 업무 탭 · 새 요청 메뉴"><img src="assets/img/works-02.webp" width="1600" height="1000" alt="새 요청 메뉴" loading="lazy" /></a><figcaption><b>새 요청 메뉴</b></figcaption></figure>
+        <figure><a href="assets/img/works-03.webp" class="zoom" data-cap="03 업무 탭 · 첫 말 보내기 전"><img src="assets/img/works-03.webp" width="1600" height="1000" alt="첫 말 보내기 전" loading="lazy" /></a><figcaption><b>첫 말 보내기 전</b></figcaption></figure>
+        <figure><a href="assets/img/works-04.webp" class="zoom" data-cap="03 업무 탭 · 대화가 없을 때의 시작 안내"><img src="assets/img/works-04.webp" width="1600" height="1000" alt="대화가 없을 때의 시작 안내" loading="lazy" /></a><figcaption><b>대화가 없을 때의 시작 안내</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EC%97%94%EC%A7%84%EC%9D%84-%EA%B3%A0%EB%A6%85%EB%8B%88%EB%8B%A4">엔진을 고릅니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-05.webp" class="zoom" data-cap="03 업무 탭 · 엔진 고르기"><img src="assets/img/works-05.webp" width="1600" height="1000" alt="엔진 고르기" loading="lazy" /></a><figcaption><b>엔진 고르기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EB%A7%90%EC%9D%84-%EB%B3%B4%EB%82%B4%EA%B3%A0-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EB%B6%99%EC%9E%85%EB%8B%88%EB%8B%A4">말을 보내고 파일을 붙입니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-06.webp" class="zoom" data-cap="03 업무 탭 · 파일 첨부"><img src="assets/img/works-06.webp" width="1600" height="1000" alt="파일 첨부" loading="lazy" /></a><figcaption><b>파일 첨부</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EC%9D%BC%ED%95%98%EB%8A%94-%EC%A4%91%EC%97%90-%EB%A7%90%EC%9D%84-%EB%8D%94%ED%95%98%EA%B1%B0%EB%82%98-%EB%A9%88%EC%B6%A5%EB%8B%88%EB%8B%A4">일하는 중에 말을 더하거나 멈춥니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-07.webp" class="zoom" data-cap="03 업무 탭 · 일하는 중에 글 쓰기"><img src="assets/img/works-07.webp" width="1600" height="1000" alt="일하는 중에 글 쓰기" loading="lazy" /></a><figcaption><b>일하는 중에 글 쓰기</b></figcaption></figure>
+        <figure><a href="assets/img/works-08.webp" class="zoom" data-cap="03 업무 탭 · 줄 선 말과 중지 단추"><img src="assets/img/works-08.webp" width="1600" height="1000" alt="줄 선 말과 중지 단추" loading="lazy" /></a><figcaption><b>줄 선 말과 중지 단추</b></figcaption></figure>
+        <figure><a href="assets/img/works-09.webp" class="zoom" data-cap="03 업무 탭 · 줄 선 말의 단추"><img src="assets/img/works-09.webp" width="1600" height="1000" alt="줄 선 말의 단추" loading="lazy" /></a><figcaption><b>줄 선 말의 단추</b></figcaption></figure>
+        <figure><a href="assets/img/works-10.webp" class="zoom" data-cap="03 업무 탭 · 줄 선 말 고치기"><img src="assets/img/works-10.webp" width="1600" height="1000" alt="줄 선 말 고치기" loading="lazy" /></a><figcaption><b>줄 선 말 고치기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EC%84%9C%EB%B8%8C%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8%EC%97%90%EA%B2%8C-%EC%9D%BC%EC%9D%84-%EB%82%98%EB%88%84%EA%B1%B0%EB%82%98-%EB%A7%A1%EA%B9%81%EB%8B%88%EB%8B%A4">서브에이전트에게 일을 나누거나 맡깁니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-11.webp" class="zoom" data-cap="03 업무 탭 · 서브에이전트 패널"><img src="assets/img/works-11.webp" width="1600" height="1000" alt="서브에이전트 패널" loading="lazy" /></a><figcaption><b>서브에이전트 패널</b></figcaption></figure>
+        <figure><a href="assets/img/works-12.webp" class="zoom" data-cap="03 업무 탭 · 서브에이전트에게 맡긴 일의 결과"><img src="assets/img/works-12.webp" width="1600" height="1000" alt="서브에이전트에게 맡긴 일의 결과" loading="lazy" /></a><figcaption><b>서브에이전트에게 맡긴 일의 결과</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EC%9A%94%EC%B2%AD-%EB%AA%A9%EB%A1%9D%EC%9D%84-%EC%A0%95%EB%A6%AC%ED%95%A9%EB%8B%88%EB%8B%A4">요청 목록을 정리합니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-13.webp" class="zoom" data-cap="03 업무 탭 · 요청 검색"><img src="assets/img/works-13.webp" width="1600" height="1000" alt="요청 검색" loading="lazy" /></a><figcaption><b>요청 검색</b></figcaption></figure>
+        <figure><a href="assets/img/works-14.webp" class="zoom" data-cap="03 업무 탭 · 요청 줄의 완료·고정 단추"><img src="assets/img/works-14.webp" width="1600" height="1000" alt="요청 줄의 완료·고정 단추" loading="lazy" /></a><figcaption><b>요청 줄의 완료·고정 단추</b></figcaption></figure>
+        <figure><a href="assets/img/works-15.webp" class="zoom" data-cap="03 업무 탭 · 요청 우클릭 메뉴"><img src="assets/img/works-15.webp" width="1600" height="1000" alt="요청 우클릭 메뉴" loading="lazy" /></a><figcaption><b>요청 우클릭 메뉴</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EB%8F%99%EB%A3%8C%EB%A5%BC-%EB%8C%80%ED%99%94%EC%97%90-%EC%B4%88%EB%8C%80%ED%95%A9%EB%8B%88%EB%8B%A4">동료를 대화에 초대합니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-16.webp" class="zoom" data-cap="03 업무 탭 · 초대할 사람 찾기"><img src="assets/img/works-16.webp" width="1600" height="1000" alt="초대할 사람 찾기" loading="lazy" /></a><figcaption><b>초대할 사람 찾기</b></figcaption></figure>
+        <figure><a href="assets/img/works-17.webp" class="zoom" data-cap="03 업무 탭 · 초대할 사람을 고른 칸"><img src="assets/img/works-17.webp" width="1600" height="1000" alt="초대할 사람을 고른 칸" loading="lazy" /></a><figcaption><b>초대할 사람을 고른 칸</b></figcaption></figure>
+        <figure><a href="assets/img/works-18.webp" class="zoom" data-cap="03 업무 탭 · 멤버 관리 칸"><img src="assets/img/works-18.webp" width="1600" height="1000" alt="멤버 관리 칸" loading="lazy" /></a><figcaption><b>멤버 관리 칸</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EC%B9%B4%EC%B9%B4%EC%98%A4%EC%9B%8C%ED%81%AC%EC%99%80-%EC%97%B0%EB%8F%99%ED%95%A9%EB%8B%88%EB%8B%A4">카카오워크와 연동합니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-19.webp" class="zoom" data-cap="03 업무 탭 · 카카오워크 연동 칸"><img src="assets/img/works-19.webp" width="1600" height="1000" alt="카카오워크 연동 칸" loading="lazy" /></a><figcaption><b>카카오워크 연동 칸</b></figcaption></figure>
+        <figure><a href="assets/img/works-20.webp" class="zoom" data-cap="03 업무 탭 · 세션 방이 묶인 대화"><img src="assets/img/works-20.webp" width="1600" height="1000" alt="세션 방이 묶인 대화" loading="lazy" /></a><figcaption><b>세션 방이 묶인 대화</b></figcaption></figure>
+        <figure><a href="assets/img/works-21.webp" class="zoom" data-cap="03 업무 탭 · 멤버 방이 이어진 대화"><img src="assets/img/works-21.webp" width="1600" height="1000" alt="멤버 방이 이어진 대화" loading="lazy" /></a><figcaption><b>멤버 방이 이어진 대화</b></figcaption></figure>
+        <figure><a href="assets/img/works-22.webp" class="zoom" data-cap="03 업무 탭 · 연결 끊기 확인 창"><img src="assets/img/works-22.webp" width="1600" height="1000" alt="연결 끊기 확인 창" loading="lazy" /></a><figcaption><b>연결 끊기 확인 창</b></figcaption></figure>
+        <figure><a href="assets/img/works-23.webp" class="zoom" data-cap="03 업무 탭 · 연결 끊김 상태"><img src="assets/img/works-23.webp" width="1600" height="1000" alt="연결 끊김 상태" loading="lazy" /></a><figcaption><b>연결 끊김 상태</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EC%A7%80%EB%82%9C-%EB%8C%80%ED%99%94%EB%A5%BC-%EC%9D%B4%EC%96%B4-%EA%B0%91%EB%8B%88%EB%8B%A4">지난 대화를 이어 갑니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-24.webp" class="zoom" data-cap="03 업무 탭 · 이어서 할 대화"><img src="assets/img/works-24.webp" width="1600" height="1000" alt="이어서 할 대화" loading="lazy" /></a><figcaption><b>이어서 할 대화</b></figcaption></figure>
+        <figure><a href="assets/img/works-25.webp" class="zoom" data-cap="03 업무 탭 · 기존 대화 가져오기"><img src="assets/img/works-25.webp" width="1600" height="1000" alt="기존 대화 가져오기" loading="lazy" /></a><figcaption><b>기존 대화 가져오기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#works--s-%EC%95%8C%EC%95%84-%EB%91%90%EB%A9%B4-%EC%A2%8B%EC%9D%80-%EA%B2%83">알아 두면 좋은 것</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/works-26.webp" class="zoom" data-cap="03 업무 탭 · 좁은 창의 업무 탭"><img src="assets/img/works-26.webp" width="1280" height="1600" alt="좁은 창의 업무 탭" loading="lazy" /></a><figcaption><b>좁은 창의 업무 탭</b></figcaption></figure>
+        <figure><a href="assets/img/works-27.webp" class="zoom" data-cap="03 업무 탭 · 다크 테마"><img src="assets/img/works-27.webp" width="1600" height="1000" alt="다크 테마" loading="lazy" /></a><figcaption><b>다크 테마</b></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-board">
+      <div class="gch-head"><div class="no">04 작업 보드</div><h2>할 일 칸반 + 팀 판</h2><p>할 일·진행·막힘·확인·완료 5열. 카드를 지시문 슬롯에 놓으면 그 작업 대화에 지시가 갑니다. 팀 판은 「WeWork」. <a href="guide/boost-one-guide.html#page-board">원문 설명 보기 →</a></p><span class="cnt">그림 19장</span></div>
+      <h3><a href="guide/boost-one-guide.html#board--s-%EC%9E%91%EC%97%85-%EB%B3%B4%EB%93%9C%EB%A5%BC-%EC%97%BD%EB%8B%88%EB%8B%A4">작업 보드를 엽니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/board-01.webp" class="zoom" data-cap="04 작업 보드 · 작업 보드 여는 곳"><img src="assets/img/board-01.webp" width="1600" height="1000" alt="작업 보드 여는 곳" loading="lazy" /></a><figcaption><b>작업 보드 여는 곳</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#board--s-%ED%99%94%EB%A9%B4-%EB%91%98%EB%9F%AC%EB%B3%B4%EA%B8%B0">화면 둘러보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/board-02.webp" class="zoom" data-cap="04 작업 보드 · 작업 보드 전체 화면"><img src="assets/img/board-02.webp" width="1600" height="900" alt="작업 보드 전체 화면" loading="lazy" /></a><figcaption><b>작업 보드 전체 화면</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#board--s-%EB%82%B4-%ED%95%A0-%EC%9D%BC-%EC%9E%91%EC%97%85%EC%9D%84-%EC%B6%94%EA%B0%80%ED%95%A9%EB%8B%88%EB%8B%A4">「내 할 일」 작업을 추가합니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/board-03.webp" class="zoom" data-cap="04 작업 보드 · 작업 추가 양식"><img src="assets/img/board-03.webp" width="1600" height="1000" alt="작업 추가 양식" loading="lazy" /></a><figcaption><b>작업 추가 양식</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#board--s-%EC%9E%91%EC%97%85-%EC%83%81%EC%84%B8%EB%A5%BC-%EB%B3%B4%EA%B3%A0-%EC%83%81%ED%83%9C%EB%A5%BC-%EB%B0%94%EA%BF%89%EB%8B%88%EB%8B%A4">작업 상세를 보고 상태를 바꿉니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/board-04.webp" class="zoom" data-cap="04 작업 보드 · 작업 상세 위쪽"><img src="assets/img/board-04.webp" width="1600" height="1000" alt="작업 상세 위쪽" loading="lazy" /></a><figcaption><b>작업 상세 위쪽</b></figcaption></figure>
+        <figure><a href="assets/img/board-05.webp" class="zoom" data-cap="04 작업 보드 · 작업 상세 아래쪽"><img src="assets/img/board-05.webp" width="1600" height="1000" alt="작업 상세 아래쪽" loading="lazy" /></a><figcaption><b>작업 상세 아래쪽</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#board--s-%EC%B9%B4%EB%93%9C%EB%A5%BC-%EB%81%8C%EC%96%B4-%EB%86%93%EC%8A%B5%EB%8B%88%EB%8B%A4">카드를 끌어 놓습니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/board-06.webp" class="zoom" data-cap="04 작업 보드 · 카드를 끌 때 서는 슬롯"><img src="assets/img/board-06.webp" width="1600" height="1000" alt="카드를 끌 때 서는 슬롯" loading="lazy" /></a><figcaption><b>카드를 끌 때 서는 슬롯</b></figcaption></figure>
+        <figure><a href="assets/img/board-07.webp" class="zoom" data-cap="04 작업 보드 · 카드 여러 장 고르기"><img src="assets/img/board-07.webp" width="1600" height="1000" alt="카드 여러 장 고르기" loading="lazy" /></a><figcaption><b>카드 여러 장 고르기</b></figcaption></figure>
+        <figure><a href="assets/img/board-08.webp" class="zoom" data-cap="04 작업 보드 · WeWork 카드를 진행 열로 옮긴 뒤"><img src="assets/img/board-08.webp" width="1600" height="1000" alt="WeWork 카드를 진행 열로 옮긴 뒤" loading="lazy" /></a><figcaption><b>WeWork 카드를 진행 열로 옮긴 뒤</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#board--s-%EC%8A%AC%EB%A1%AF-%EC%A7%80%EC%8B%9C%EB%AC%B8%EC%9D%84-%EC%A0%95%ED%95%A9%EB%8B%88%EB%8B%A4">슬롯 지시문을 정합니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/board-09.webp" class="zoom" data-cap="04 작업 보드 · 슬롯 설정"><img src="assets/img/board-09.webp" width="1600" height="1000" alt="슬롯 설정" loading="lazy" /></a><figcaption><b>슬롯 설정</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#board--s-WeWork-%EB%A1%9C-%ED%8C%80%EA%B3%BC-%ED%95%A8%EA%BB%98-%EB%B4%85%EB%8B%88%EB%8B%A4">WeWork 로 팀과 함께 봅니다</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/board-10.webp" class="zoom" data-cap="04 작업 보드 · WeWork 판"><img src="assets/img/board-10.webp" width="1600" height="900" alt="WeWork 판" loading="lazy" /></a><figcaption><b>WeWork 판</b></figcaption></figure>
+        <figure><a href="assets/img/board-11.webp" class="zoom" data-cap="04 작업 보드 · 사람 필터"><img src="assets/img/board-11.webp" width="1600" height="900" alt="사람 필터" loading="lazy" /></a><figcaption><b>사람 필터</b></figcaption></figure>
+        <figure><a href="assets/img/board-12.webp" class="zoom" data-cap="04 작업 보드 · 사람별 보기"><img src="assets/img/board-12.webp" width="1600" height="900" alt="사람별 보기" loading="lazy" /></a><figcaption><b>사람별 보기</b></figcaption></figure>
+        <figure><a href="assets/img/board-13.webp" class="zoom" data-cap="04 작업 보드 · 설명으로 작업 추가"><img src="assets/img/board-13.webp" width="1600" height="900" alt="설명으로 작업 추가" loading="lazy" /></a><figcaption><b>설명으로 작업 추가</b></figcaption></figure>
+        <figure><a href="assets/img/board-14.webp" class="zoom" data-cap="04 작업 보드 · 에이전트가 채운 양식"><img src="assets/img/board-14.webp" width="1600" height="900" alt="에이전트가 채운 양식" loading="lazy" /></a><figcaption><b>에이전트가 채운 양식</b></figcaption></figure>
+        <figure><a href="assets/img/board-15.webp" class="zoom" data-cap="04 작업 보드 · WeWork 작업 상세"><img src="assets/img/board-15.webp" width="1600" height="900" alt="WeWork 작업 상세" loading="lazy" /></a><figcaption><b>WeWork 작업 상세</b></figcaption></figure>
+        <figure><a href="assets/img/board-16.webp" class="zoom" data-cap="04 작업 보드 · WeWork 상세의 담당자·알림"><img src="assets/img/board-16.webp" width="1600" height="900" alt="WeWork 상세의 담당자·알림" loading="lazy" /></a><figcaption><b>WeWork 상세의 담당자·알림</b></figcaption></figure>
+        <figure><a href="assets/img/board-17.webp" class="zoom" data-cap="04 작업 보드 · 공간이 없을 때"><img src="assets/img/board-17.webp" width="1600" height="900" alt="공간이 없을 때" loading="lazy" /></a><figcaption><b>공간이 없을 때</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#board--s-%EC%95%8C%EC%95%84-%EB%91%90%EB%A9%B4-%EC%A2%8B%EC%9D%80-%EA%B2%83">알아 두면 좋은 것</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/board-18.webp" class="zoom" data-cap="04 작업 보드 · 좁은 창의 작업 보드"><img src="assets/img/board-18.webp" width="1280" height="1600" alt="좁은 창의 작업 보드" loading="lazy" /></a><figcaption><b>좁은 창의 작업 보드</b></figcaption></figure>
+        <figure><a href="assets/img/board-19.webp" class="zoom" data-cap="04 작업 보드 · 다크 테마"><img src="assets/img/board-19.webp" width="1600" height="900" alt="다크 테마" loading="lazy" /></a><figcaption><b>다크 테마</b></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-feed">
+      <div class="gch-head"><div class="no">05 피드</div><h2>모든 채널을 한 목록에</h2><p>카카오워크·아지트·메일·지라·위키 글을 읽고 답하고, ✦로 비서에게 맡겨 답장 초안을 받습니다. 본문 검색, 메일 분류 트리. <a href="guide/boost-one-guide.html#page-feed">원문 설명 보기 →</a></p><span class="cnt">그림 36장</span></div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%ED%99%94%EB%A9%B4-%EB%91%98%EB%9F%AC%EB%B3%B4%EA%B8%B0">화면 둘러보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-01.webp" class="zoom" data-cap="05 피드 · 피드 전체 화면"><img src="assets/img/feed-01.webp" width="1600" height="1000" alt="피드 전체 화면" loading="lazy" /></a><figcaption><b>피드 전체 화면</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EC%B1%84%EB%84%90%EC%9D%84-%EA%B3%A8%EB%9D%BC-%EB%B3%B4%EA%B8%B0">채널을 골라 보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-02.webp" class="zoom" data-cap="05 피드 · 칩 위에 뜬 「메일만 보기」"><img src="assets/img/feed-02.webp" width="1600" height="1000" alt="칩 위에 뜬 「메일만 보기」" loading="lazy" /></a><figcaption><b>칩 위에 뜬 「메일만 보기」</b><span>한 채널만 보려면 칩에 마우스를 올리고 「&lt;채널&gt;만 보기」를 누릅니다(예: 「메일만 보기」).</span></figcaption></figure>
+        <figure><a href="assets/img/feed-03.webp" class="zoom" data-cap="05 피드 · 지라를 끈 상태와 「피드」 단추"><img src="assets/img/feed-03.webp" width="1600" height="1000" alt="지라를 끈 상태와 「피드」 단추" loading="lazy" /></a><figcaption><b>지라를 끈 상태와 「피드」 단추</b><span>하나라도 꺼져 있으면 왼쪽 위 「피드」 글자가 단추가 됩니다. 누르면 모든 채널을 다시 봅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EC%B9%B4%EC%B9%B4%EC%98%A4%EC%9B%8C%ED%81%AC-%EB%B0%A9-%EC%9D%BD%EA%B8%B0">카카오워크 방 읽기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-04.webp" class="zoom" data-cap="05 피드 · 메시지에 올리면 뜨는 단추"><img src="assets/img/feed-04.webp" width="1600" height="500" alt="메시지에 올리면 뜨는 단추" loading="lazy" /></a><figcaption><b>메시지에 올리면 뜨는 단추</b><span>메시지에 마우스를 올리면 오른쪽에 단추가 뜹니다. ✓ 「메시지 선택」 — 여러 메시지를 골라 한꺼번에 비서에게 넘길 때 씁니다. 고른 마지막 메시지 옆에 ✦ 가 뜹니다.✦ 「비서에게 맡기기」 — 이 메시지로 초안이나 요청을 맡깁니다(아래 「비서에게 맡기기」).「카카오워크에서 열기」 — 카카오워크 앱에서 그 메시지를 엽니다.반응 줄 — 맨 앞 화살표는 「이 메시지에 답장」(인용 답장)이고, 그 뒤 이모지는 리액션입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-05.webp" class="zoom" data-cap="05 피드 · 「수정됨」 표시"><img src="assets/img/feed-05.webp" width="1600" height="400" alt="「수정됨」 표시" loading="lazy" /></a><figcaption><b>「수정됨」 표시</b><span>카카오워크에서 고친 메시지는 시각 아래에 「수정됨」이 붙고, 고친 글로 보입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-06.webp" class="zoom" data-cap="05 피드 · 채널 판 — ①「스레드 열기」 ②「수정됨」"><img src="assets/img/feed-06.webp" width="1600" height="1000" alt="채널 판 — ①「스레드 열기」 ②「수정됨」" loading="lazy" /></a><figcaption><b>채널 판 — ①「스레드 열기」 ②「수정됨」</b><span>채널 메시지에 마우스를 올리면 아래에 「스레드 열기」가 뜹니다. 채널 메시지에도 「수정됨」이 붙습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-07.webp" class="zoom" data-cap="05 피드 · 스레드 칸"><img src="assets/img/feed-07.webp" width="1600" height="1000" alt="스레드 칸" loading="lazy" /></a><figcaption><b>스레드 칸</b><span>「닫기」나 Esc 로 스레드 칸을 닫습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-08.webp" class="zoom" data-cap="05 피드 · 방 대화 요약"><img src="assets/img/feed-08.webp" width="1600" height="1000" alt="방 대화 요약" loading="lazy" /></a><figcaption><b>방 대화 요약</b><span>× 나 Esc 로 닫습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EB%A9%94%EC%9D%BC-%EC%9D%BD%EA%B8%B0-%E2%80%94-%EB%B6%84%EB%A5%98-%ED%8A%B8%EB%A6%AC">메일 읽기 — 분류 트리</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-09.webp" class="zoom" data-cap="05 피드 · 메일 분류 트리"><img src="assets/img/feed-09.webp" width="1600" height="1000" alt="메일 분류 트리" loading="lazy" /></a><figcaption><b>메일 분류 트리</b><span>분류 줄에 마우스를 올리면 ↑↓(순서 바꾸기)와 ＋(하위 분류)가 뜹니다. 위쪽 분류가 메일을 먼저 가져갑니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-10.webp" class="zoom" data-cap="05 피드 · 메일 상세와 ① 보낸 사람 규칙"><img src="assets/img/feed-10.webp" width="1600" height="1000" alt="메일 상세와 ① 보낸 사람 규칙" loading="lazy" /></a><figcaption><b>메일 상세와 ① 보낸 사람 규칙</b><span>메일 아래 「보낸 사람 규칙」 줄로 이 보낸 사람의 메일이 늘 갈 분류를 정할 수 있습니다. 기준(「이 주소」/「이 도메인」)과 분류를 고르고 「규칙 만들기」를 누릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-11.webp" class="zoom" data-cap="05 피드 · 메일 ⋯ 메뉴"><img src="assets/img/feed-11.webp" width="1600" height="1000" alt="메일 ⋯ 메뉴" loading="lazy" /></a><figcaption><b>메일 ⋯ 메뉴</b><span>분류를 고르고 목록 머리의 「⋯」를 누르면 「분류 편집」·「분류 제안 받기」·「설정 내보내기」·「설정 가져오기」가 있습니다. 「전체」에서는 「분류 편집」이 꺼집니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-12.webp" class="zoom" data-cap="05 피드 · 분류 편집 칸"><img src="assets/img/feed-12.webp" width="1600" height="1000" alt="분류 편집 칸" loading="lazy" /></a><figcaption><b>분류 편집 칸</b><span>「분류 편집」 — 이름, 「조건 묶기」(「하나라도 맞음」/「모두 맞음」), 조건 줄(보낸 사람·보낸 도메인·제목 × 포함·일치·시작)을 고칩니다. 아래에 「이 규칙에 맞는 메일 N통」과 제목 예가 바로 보입니다. 「저장」·「되돌리기」·「분류 지우기」로 마칩니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-13.webp" class="zoom" data-cap="05 피드 · 분류 제안 받기 칸"><img src="assets/img/feed-13.webp" width="1600" height="1000" alt="분류 제안 받기 칸" loading="lazy" /></a><figcaption><b>분류 제안 받기 칸</b><span>「분류 제안 받기」 — 제안할 에이전트(Claude·Codex·kap)를 고르고 「분류 제안 받기」를 누릅니다. 메일 본문은 보내지 않고 보낸 사람·도메인·제목·날짜만 보냅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-14.webp" class="zoom" data-cap="05 피드 · 분류 제안 결과"><img src="assets/img/feed-14.webp" width="1600" height="1000" alt="분류 제안 결과" loading="lazy" /></a><figcaption><b>분류 제안 결과</b><span>적용할 것만 체크하고 「선택한 N개 적용」을 누릅니다. 처음에는 새 분류와 잘못 놓인 메일을 고치는 변경만 골라 두고, 지우기는 직접 고르게 둡니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EC%95%84%EC%A7%80%ED%8A%B8%EC%A7%80%EB%9D%BC%EC%9C%84%ED%82%A4-%EC%9D%BD%EA%B8%B0">아지트·지라·위키 읽기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-15.webp" class="zoom" data-cap="05 피드 · 아지트 그룹·글·상세"><img src="assets/img/feed-15.webp" width="1600" height="1000" alt="아지트 그룹·글·상세" loading="lazy" /></a><figcaption><b>아지트 그룹·글·상세</b><span>아지트 — 「아지트만 보기」를 하면 그룹 → 글 목록 → 글 세 칸입니다. 그룹 목록 위 「전체」·「팀」·「나만」으로 멘션이 있는 그룹만 거를 수 있습니다. 글에는 반응과 댓글이 함께 보입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-16.webp" class="zoom" data-cap="05 피드 · 지라 이슈 상세"><img src="assets/img/feed-16.webp" width="1600" height="1000" alt="지라 이슈 상세" loading="lazy" /></a><figcaption><b>지라 이슈 상세</b><span>지라 — 이슈를 누르면 상태·담당자, 설명, 댓글과 바뀐 이력이 차례로 보입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-17.webp" class="zoom" data-cap="05 피드 · 위키 글 상세"><img src="assets/img/feed-17.webp" width="1600" height="1000" alt="위키 글 상세" loading="lazy" /></a><figcaption><b>위키 글 상세</b><span>위키 — 글을 누르면 공간·판·고친 날과 본문, 댓글이 보입니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%ED%94%BC%EB%93%9C-%EA%B2%80%EC%83%89">피드 검색</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-18.webp" class="zoom" data-cap="05 피드 · 검색 결과 — ①「메시지」 칸 ② 기간"><img src="assets/img/feed-18.webp" width="1600" height="1000" alt="검색 결과 — ①「메시지」 칸 ② 기간" loading="lazy" /></a><figcaption><b>검색 결과 — ①「메시지」 칸 ② 기간</b><span>「메시지」 오른쪽 기간 고르기로 「전체 기간」·「최근 7일」·「최근 30일」·「최근 90일」 중에서 고릅니다. 채널은 위 채널 칩에서 켠 채널만 찾습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-19.webp" class="zoom" data-cap="05 피드 · 검색 결과로 연 방"><img src="assets/img/feed-19.webp" width="1600" height="1000" alt="검색 결과로 연 방" loading="lazy" /></a><figcaption><b>검색 결과로 연 방</b><span>결과 줄을 누르면 그 방이나 글이 열리고 그 메시지로 갑니다. 목록에 없는 오래된 대화면 결과 자리에서 원문을 펼쳐 보여 줍니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-20.webp" class="zoom" data-cap="05 피드 · 오타를 고쳐 찾은 결과"><img src="assets/img/feed-20.webp" width="1280" height="1200" alt="오타를 고쳐 찾은 결과" loading="lazy" /></a><figcaption><b>오타를 고쳐 찾은 결과</b><span>오타는 한 번 고쳐 찾습니다. 그대로는 하나도 없으면 가까운 말로 고쳐 찾고 「「배포」(으)로 고쳐 찾았습니다.」라고 알려 줍니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-21.webp" class="zoom" data-cap="05 피드 · 최근 검색"><img src="assets/img/feed-21.webp" width="1280" height="1000" alt="최근 검색" loading="lazy" /></a><figcaption><b>최근 검색</b><span>「지우기」로 모두 지웁니다. 최근 검색어는 이 기기 안에만 있습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EC%B2%98%EB%A6%AC-%ED%91%9C%EC%8B%9C%EC%99%80-%EC%95%88-%EC%9D%BD%EC%9D%8C">처리 표시와 안 읽음</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-22.webp" class="zoom" data-cap="05 피드 · 줄 단추 — ① 요약 ② 처리 ③ 고정"><img src="assets/img/feed-22.webp" width="1280" height="1600" alt="줄 단추 — ① 요약 ② 처리 ③ 고정" loading="lazy" /></a><figcaption><b>줄 단추 — ① 요약 ② 처리 ③ 고정</b><span>목록 줄에 마우스를 올리면 오른쪽에 단추 셋이 뜹니다. 「요약」 — 그 방·글을 요약합니다.「처리」 — 다 본 줄을 목록 아래 「처리됨」으로 내립니다.「고정」 — 줄을 목록 맨 위에 붙여 둡니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-23.webp" class="zoom" data-cap="05 피드 · 맨 위 고정한 줄과 펼친 「처리됨」"><img src="assets/img/feed-23.webp" width="1280" height="1600" alt="맨 위 고정한 줄과 펼친 「처리됨」" loading="lazy" /></a><figcaption><b>맨 위 고정한 줄과 펼친 「처리됨」</b><span>「처리됨 (N)」을 누르면 처리한 줄이 펼쳐집니다. 거기서 다시 ✓ 를 누르면 처리가 풀리고, 상자 단추 「보관」을 누르면 「보관됨」 탭으로 옮겨집니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-24.webp" class="zoom" data-cap="05 피드 · 「안 읽음」 탭"><img src="assets/img/feed-24.webp" width="1280" height="1600" alt="「안 읽음」 탭" loading="lazy" /></a><figcaption><b>「안 읽음」 탭</b><span>「안 읽음」 탭은 안 읽은 줄만 보여 줍니다. 탭 옆 숫자가 안 읽은 줄 수입니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EB%B9%84%EC%84%9C%EC%97%90%EA%B2%8C-%EB%A7%A1%EA%B8%B0%EA%B8%B0%E2%9C%A6">비서에게 맡기기(✦)</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-25.webp" class="zoom" data-cap="05 피드 · ✦ 메뉴 — 「초안」 탭"><img src="assets/img/feed-25.webp" width="1600" height="1000" alt="✦ 메뉴 — 「초안」 탭" loading="lazy" /></a><figcaption><b>✦ 메뉴 — 「초안」 탭</b><span>「스킬 찾기」에 이름을 치면 그 스킬로 맡길 수 있습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EB%8B%B5%EC%9E%A5%EC%B9%B8%EC%9C%BC%EB%A1%9C-%EC%B4%88%EC%95%88-%EB%B0%9B%EA%B8%B0%EB%B3%B4%EB%82%B4%EA%B8%B0">답장칸으로 초안 받기·보내기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-26.webp" class="zoom" data-cap="05 피드 · 답장칸 — ①「초안」 ②「요청」 ③「답글」 ④ 보낼 곳 ⑤ 그림 첨부"><img src="assets/img/feed-26.webp" width="1600" height="267" alt="답장칸 — ①「초안」 ②「요청」 ③「답글」 ④ 보낼 곳 ⑤ 그림 첨부" loading="lazy" /></a><figcaption><b>답장칸 — ①「초안」 ②「요청」 ③「답글」 ④ 보낼 곳 ⑤ 그림 첨부</b></figcaption></figure>
+        <figure><a href="assets/img/feed-27.webp" class="zoom" data-cap="05 피드 · 초안을 쓰는 중"><img src="assets/img/feed-27.webp" width="1600" height="1455" alt="초안을 쓰는 중" loading="lazy" /></a><figcaption><b>초안을 쓰는 중</b><span>비서가 쓰는 동안 목록 줄에 「초안 쓰는 중」이, 답장칸에 「만드는 중 0:00 · 취소」가 뜹니다. 「취소」로 멈출 수 있습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-28.webp" class="zoom" data-cap="05 피드 · 답장칸에 들어온 초안"><img src="assets/img/feed-28.webp" width="1120" height="480" alt="답장칸에 들어온 초안" loading="lazy" /></a><figcaption><b>답장칸에 들어온 초안</b><span>초안이 오면 답장칸에 채워집니다. 처음 적은 말은 초안을 쓸 때의 지시로 쓰입니다. 기다리는 동안 답장칸에 다른 글을 쓰고 있었으면 「바꾸기 / 뒤에 붙이기」 중에서 고릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-29.webp" class="zoom" data-cap="05 피드 · 보낼 곳 고르기"><img src="assets/img/feed-29.webp" width="1600" height="667" alt="보낼 곳 고르기" loading="lazy" /></a><figcaption><b>보낼 곳 고르기</b><span>「요청」은 답장칸 글을 비서에게 일로 맡깁니다. 왼쪽 「기본」을 눌러 보낼 곳(비서 책상 새 요청, 열린 요청, 프로젝트 새 요청)을 고릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-30.webp" class="zoom" data-cap="05 피드 · 답장 대상 줄"><img src="assets/img/feed-30.webp" width="1600" height="400" alt="답장 대상 줄" loading="lazy" /></a><figcaption><b>답장 대상 줄</b><span>인용 답장 — 카카오워크 대화방 메시지의 반응 줄 맨 앞 화살표 「이 메시지에 답장」을 누르면 답장칸 위에 「답장 대상 · 이름: 글머리」 줄이 뜹니다. 그 상태로 보내면 그 메시지의 인용 답장으로 나갑니다. × 로 풉니다. 채널은 인용 답장 대신 스레드로 답합니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-31.webp" class="zoom" data-cap="05 피드 · 멘션 후보"><img src="assets/img/feed-31.webp" width="1600" height="667" alt="멘션 후보" loading="lazy" /></a><figcaption><b>멘션 후보</b><span>멘션 — @ 를 치고 이름을 이어 치면 이 방 사람 후보가 뜹니다. 골라 Enter 를 칩니다. @@ 는 팀 멘션입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-32.webp" class="zoom" data-cap="05 피드 · 답장 대상·그림·멘션을 붙인 답장칸"><img src="assets/img/feed-32.webp" width="1600" height="533" alt="답장 대상·그림·멘션을 붙인 답장칸" loading="lazy" /></a><figcaption><b>답장 대상·그림·멘션을 붙인 답장칸</b><span>그림 첨부 — 클립 단추 「이미지 첨부」로 그림을 붙입니다. 붙인 그림은 답장칸 위에 칩으로 서고, × 로 뺍니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-33.webp" class="zoom" data-cap="05 피드 · 보내기 실패 줄 (까닭 문구는 예시)"><img src="assets/img/feed-33.webp" width="1600" height="833" alt="보내기 실패 줄 (까닭 문구는 예시)" loading="lazy" /></a><figcaption><b>보내기 실패 줄 (까닭 문구는 예시)</b><span>보냈는지 알 수 없는 경우에는 「삭제」만 뜹니다. 카카오워크에서 실제로 나갔는지 먼저 확인합니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EB%B0%A9-%E2%8B%AF-%EB%A9%94%EB%89%B4-%E2%80%94-%EA%B1%B8%EB%A6%B0-%EA%B7%9C%EC%B9%99">방 ⋯ 메뉴 — 걸린 규칙</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-34.webp" class="zoom" data-cap="05 피드 · 방 ⋯ 메뉴"><img src="assets/img/feed-34.webp" width="1040" height="360" alt="방 ⋯ 메뉴" loading="lazy" /></a><figcaption><b>방 ⋯ 메뉴</b><span>「이 방에 규칙 만들기」를 누르면 이 방을 대상으로 새 규칙을 만듭니다. 규칙 만들기는 「자동 규칙」 가이드를 봅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#feed--s-%EC%95%8C%EC%95%84-%EB%91%90%EB%A9%B4-%EC%A2%8B%EC%9D%80-%EA%B2%83">알아 두면 좋은 것</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/feed-35.webp" class="zoom" data-cap="05 피드 · 640 폭"><img src="assets/img/feed-35.webp" width="1280" height="1600" alt="640 폭" loading="lazy" /></a><figcaption><b>640 폭</b><span>창이 좁으면 목록과 대화가 나란히 서고, 더 좁으면 한 번에 한 칸씩 보입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/feed-36.webp" class="zoom" data-cap="05 피드 · 어두운 테마"><img src="assets/img/feed-36.webp" width="1600" height="1000" alt="어두운 테마" loading="lazy" /></a><figcaption><b>어두운 테마</b><span>어두운 테마에서도 같은 자리입니다.</span></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-calendar">
+      <div class="gch-head"><div class="no">06 캘린더</div><h2>Google 캘린더 내장</h2><p>일정 보기·만들기, 회의실 고르기, 쌓인 초대에 한꺼번에 답하기, 조직도로 동료·팀 일정 겹쳐 보기, 녹음 예약. <a href="guide/boost-one-guide.html#page-calendar">원문 설명 보기 →</a></p><span class="cnt">그림 24장</span></div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%B2%98%EC%9D%8C-%EC%97%B4%EA%B8%B0">처음 열기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-01.webp" class="zoom" data-cap="06 캘린더 · Google 로그인이 필요할 때의 캘린더 화면"><img src="assets/img/calendar-01.webp" width="1280" height="800" alt="Google 로그인이 필요할 때의 캘린더 화면" loading="lazy" /></a><figcaption><b>Google 로그인이 필요할 때의 캘린더 화면</b><span>처음이면 「Google 캘린더를 보려면 Google Workspace 로그인이 필요합니다.」가 보입니다. 「Google 로그인」을 눌러 회사 Google 계정으로 로그인합니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-02.webp" class="zoom" data-cap="06 캘린더 · 캘린더 첫 화면. 1 보기 전환, 2 일정 만들기, 3 초대, 4 오늘과 이전·다음 기간, 5 작은 달력, 6 사람·팀 검색"><img src="assets/img/calendar-02.webp" width="1280" height="800" alt="캘린더 첫 화면. 1 보기 전환, 2 일정 만들기, 3 초대, 4 오늘과 이전·다음 기간, 5 작은 달력, 6 사람·팀 검색" loading="lazy" /></a><figcaption><b>캘린더 첫 화면. 1 보기 전환, 2 일정 만들기, 3 초대, 4 오늘과 이전·다음 기간, 5 작은 달력, 6 사람·팀 검색</b><span>로그인하면 이번 주 일정이 보입니다. 화면 구성은 아래와 같습니다. 보기 전환: 「일」「4일」「주」「월」「일정」「+」: 새 일정 만들기「초대」: 아직 답하지 않은 초대 수「오늘」과 좌우 화살표: 오늘로 가기, 이전·다음 기간으로 가기작은 달력: 날짜를 눌러 그 주로 가기「사람·팀 검색」: 다른 사람 일정을 겹쳐 보기</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EB%B3%B4%EA%B8%B0-%EB%B0%94%EA%BE%B8%EA%B8%B0">보기 바꾸기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-03.webp" class="zoom" data-cap="06 캘린더 · 월 보기"><img src="assets/img/calendar-03.webp" width="1280" height="800" alt="월 보기" loading="lazy" /></a><figcaption><b>월 보기</b><span>위쪽 가운데 「일」「4일」「주」「월」「일정」 중 하나를 누릅니다. 「월」을 누르면 한 달이 한 화면에 보이고, 칸에 다 못 들어간 일정은 「+N개 더보기」로 묶입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-04.webp" class="zoom" data-cap="06 캘린더 · 일정(목록) 보기"><img src="assets/img/calendar-04.webp" width="1280" height="800" alt="일정(목록) 보기" loading="lazy" /></a><figcaption><b>일정(목록) 보기</b><span>「일정」을 누르면 날짜별 목록으로 봅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%9E%91%EC%9D%80-%EB%8B%AC%EB%A0%A5%EC%9C%BC%EB%A1%9C-%EB%82%A0%EC%A7%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0">작은 달력으로 날짜 옮기기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-05.webp" class="zoom" data-cap="06 캘린더 · 작은 달력에서 화살표로 날짜를 옮긴 모습"><img src="assets/img/calendar-05.webp" width="1280" height="800" alt="작은 달력에서 화살표로 날짜를 옮긴 모습" loading="lazy" /></a><figcaption><b>작은 달력에서 화살표로 날짜를 옮긴 모습</b><span>키보드로도 옮길 수 있습니다. 작은 달력의 날짜에 초점을 둔 채 ←→ 는 하루, ↑↓ 는 한 주, Home·End 는 그 주의 처음·끝으로 옮깁니다. 그달 밖으로 나가면 작은 달력이 다음(이전) 달로 넘어갑니다. Enter 를 누르면 그날로 갑니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%9D%BC%EC%A0%95-%EC%B0%BE%EA%B8%B0">일정 찾기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-06.webp" class="zoom" data-cap="06 캘린더 · 「테스트」로 찾은 결과"><img src="assets/img/calendar-06.webp" width="1280" height="800" alt="「테스트」로 찾은 결과" loading="lazy" /></a><figcaption><b>「테스트」로 찾은 결과</b><span>찾을 말을 치고 Enter 를 누릅니다. 결과는 날짜별로 모여 보이고, 줄을 누르면 그 일정이 열립니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%9D%BC%EC%A0%95-%EB%B3%B4%EA%B3%A0-%EC%B0%B8%EC%84%9D-%EC%97%AC%EB%B6%80-%EB%8B%B5%ED%95%98%EA%B8%B0">일정 보고 참석 여부 답하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-07.webp" class="zoom" data-cap="06 캘린더 · 일정 상세 창과 참석 여부 단추"><img src="assets/img/calendar-07.webp" width="1280" height="800" alt="일정 상세 창과 참석 여부 단추" loading="lazy" /></a><figcaption><b>일정 상세 창과 참석 여부 단추</b><span>내가 참석자인 일정이면 아래쪽 「참석 여부」에서 「참석」「미정」「불참」 중 하나를 누릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-08.webp" class="zoom" data-cap="06 캘린더 · 반복 일정 응답 범위 묻기"><img src="assets/img/calendar-08.webp" width="1280" height="800" alt="반복 일정 응답 범위 묻기" loading="lazy" /></a><figcaption><b>반복 일정 응답 범위 묻기</b><span>반복 일정에 답하면 「반복 일정의 어느 일정에 응답할까요?」가 뜹니다. 이번 일정만이면 「이 일정」, 모든 반복이면 「모든 일정」을 고릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%8C%93%EC%9D%B8-%EC%B4%88%EB%8C%80%EC%97%90-%ED%95%9C%EA%BA%BC%EB%B2%88%EC%97%90-%EB%8B%B5%ED%95%98%EA%B8%B0">쌓인 초대에 한꺼번에 답하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-09.webp" class="zoom" data-cap="06 캘린더 · 응답 전 초대 목록"><img src="assets/img/calendar-09.webp" width="1280" height="800" alt="응답 전 초대 목록" loading="lazy" /></a><figcaption><b>응답 전 초대 목록</b><span>「응답 전 초대」 목록에서 초대마다 「참석」「미정」「불참」을 누릅니다. 답한 초대는 목록에서 빠집니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%9D%BC%EC%A0%95-%EB%A7%8C%EB%93%A4%EA%B8%B0">일정 만들기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-10.webp" class="zoom" data-cap="06 캘린더 · 일정 만들기 창"><img src="assets/img/calendar-10.webp" width="1280" height="800" alt="일정 만들기 창" loading="lazy" /></a><figcaption><b>일정 만들기 창</b><span>왼쪽 위 「+」를 누르거나 c 를 누릅니다. 「일정 만들기」 창이 열립니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-11.webp" class="zoom" data-cap="06 캘린더 · 참석자 칸에 이름을 치면 뜨는 조직도 후보"><img src="assets/img/calendar-11.webp" width="1280" height="800" alt="참석자 칸에 이름을 치면 뜨는 조직도 후보" loading="lazy" /></a><figcaption><b>참석자 칸에 이름을 치면 뜨는 조직도 후보</b><span>「참석자」 칸에 이름이나 팀 이름을 치면 조직도 후보가 뜹니다. 후보를 누르면 참석자로 들어갑니다. 회사 밖 사람은 이메일 주소를 그대로 쓰고 「추가」를 누릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%ED%9A%8C%EC%9D%98%EC%8B%A4-%EA%B3%A0%EB%A5%B4%EA%B8%B0">회의실 고르기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-12.webp" class="zoom" data-cap="06 캘린더 · 추천 회의실 목록"><img src="assets/img/calendar-12.webp" width="1280" height="800" alt="추천 회의실 목록" loading="lazy" /></a><figcaption><b>추천 회의실 목록</b><span>「회의실」 칸 아래 「추천」에 지금 시간에 비어 있는 방이 인원에 맞춰 보입니다. 「자주 사용」에는 내가 자주 잡던 방이 보입니다. 줄을 누르면 회의실로 들어갑니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-13.webp" class="zoom" data-cap="06 캘린더 · 회의실 이름으로 찾기"><img src="assets/img/calendar-13.webp" width="1280" height="800" alt="회의실 이름으로 찾기" loading="lazy" /></a><figcaption><b>회의실 이름으로 찾기</b><span>방 이름을 알면 「회의실 또는 리소스 검색」에 이름 일부를 칩니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-14.webp" class="zoom" data-cap="06 캘린더 · 모든 회의실 둘러보기의 거르기 줄"><img src="assets/img/calendar-14.webp" width="1280" height="800" alt="모든 회의실 둘러보기의 거르기 줄" loading="lazy" /></a><figcaption><b>모든 회의실 둘러보기의 거르기 줄</b><span>건물·층별로 보고 싶으면 「모든 회의실 둘러보기」를 누릅니다. 건물·인원·「빈 회의실만」으로 거를 수 있고, 「근무 위치」에 건물·층을 정해 두면 그 건물·층부터 추천합니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B3%A0-%EC%B4%88%EB%8C%80-%EB%A9%94%EC%9D%BC-%EB%B3%B4%EB%82%B4%EA%B8%B0">저장하고 초대 메일 보내기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-15.webp" class="zoom" data-cap="06 캘린더 · 초대 메일을 보낼지 묻기"><img src="assets/img/calendar-15.webp" width="1280" height="800" alt="초대 메일을 보낼지 묻기" loading="lazy" /></a><figcaption><b>초대 메일을 보낼지 묻기</b><span>참석자가 있으면 「참석자에게 초대 메일을 보낼까요?」가 뜹니다. 「보내기」「보내지 않기」 중 하나를 고릅니다. 「취소」를 누르면 저장하지 않고 창으로 돌아갑니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-16.webp" class="zoom" data-cap="06 캘린더 · 저장 뒤 회의실 예약 확인 중 문장"><img src="assets/img/calendar-16.webp" width="1280" height="800" alt="저장 뒤 회의실 예약 확인 중 문장" loading="lazy" /></a><figcaption><b>저장 뒤 회의실 예약 확인 중 문장</b><span>회의실을 넣었다면 머리 줄에 「회의실 예약을 확인하고 있습니다.」가 잠시 보입니다. 회의실이 수락하면 「회의실을 예약했습니다.」로, 거절하면 거절한 회의실 이름과 함께 다른 회의실을 고르라는 문장으로 바뀝니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%9D%BC%EC%A0%95-%EA%B3%A0%EC%B9%98%EA%B8%B0">일정 고치기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-17.webp" class="zoom" data-cap="06 캘린더 · 변경 메일을 보낼지 묻기"><img src="assets/img/calendar-17.webp" width="1280" height="800" alt="변경 메일을 보낼지 묻기" loading="lazy" /></a><figcaption><b>변경 메일을 보낼지 묻기</b><span>다른 참석자가 있으면 「참석자에게 변경 메일을 보낼까요?」가 뜹니다. 「보내기」 또는 「보내지 않기」를 고릅니다. 반복 일정이면 그 전에 어느 일정까지 바꿀지 먼저 묻습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%ED%9A%8C%EC%9D%98%EB%A5%BC-%EB%85%B9%EC%9D%8C-%EC%98%88%EC%95%BD%ED%95%98%EA%B8%B0">회의를 녹음 예약하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-18.webp" class="zoom" data-cap="06 캘린더 · 일정 상세의 「녹음 예약」"><img src="assets/img/calendar-18.webp" width="1280" height="800" alt="일정 상세의 「녹음 예약」" loading="lazy" /></a><figcaption><b>일정 상세의 「녹음 예약」</b><span>다가오는 일정을 열고 아래쪽 「녹음 예약」을 켭니다. 일정 칸에 마이크 표시가 붙습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EB%8F%99%EB%A3%8C%ED%8C%80-%EC%9D%BC%EC%A0%95-%EA%B2%B9%EC%B3%90-%EB%B3%B4%EA%B8%B0%EC%A1%B0%EC%A7%81%EB%8F%84">동료·팀 일정 겹쳐 보기(조직도)</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-19.webp" class="zoom" data-cap="06 캘린더 · 두 사람을 골라 겹쳐 본 모습"><img src="assets/img/calendar-19.webp" width="1280" height="800" alt="두 사람을 골라 겹쳐 본 모습" loading="lazy" /></a><figcaption><b>두 사람을 골라 겹쳐 본 모습</b><span>후보에서 사람을 누르면 그 사람 일정이 내 일정 옆에 다른 색으로 겹쳐 보입니다. 여러 명을 고를 수 있습니다. 공개 범위에 따라 일정 제목이 보이기도 하고 「바쁨」으로만 보이기도 합니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-20.webp" class="zoom" data-cap="06 캘린더 · 내 조직 트리와 선택 목록"><img src="assets/img/calendar-20.webp" width="1280" height="800" alt="내 조직 트리와 선택 목록" loading="lazy" /></a><figcaption><b>내 조직 트리와 선택 목록</b><span>검색어를 지우면 「내 조직」 트리와 「선택」 목록이 보입니다. 아래 「전체 조직도」를 펼치면 회사 전체 조직에서 고를 수 있습니다. 고른 사람은 「선택」에서 ×로 하나씩, 「모두 빼기」로 한꺼번에 뺍니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%BA%98%EB%A6%B0%EB%8D%94-%EC%BC%9C%EA%B3%A0-%EB%81%84%EA%B8%B0-%EC%83%89-%EB%B0%94%EA%BE%B8%EA%B8%B0">캘린더 켜고 끄기, 색 바꾸기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-21.webp" class="zoom" data-cap="06 캘린더 · 캘린더 색 고르기"><img src="assets/img/calendar-21.webp" width="1280" height="800" alt="캘린더 색 고르기" loading="lazy" /></a><figcaption><b>캘린더 색 고르기</b><span>줄에 마우스를 올리면 오른쪽에 「⋯」가 나옵니다. 누르면 그 캘린더 색을 고를 수 있습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#calendar--s-%EC%95%8C%EC%95%84-%EB%91%90%EB%A9%B4-%EC%A2%8B%EC%9D%80-%EA%B2%83">알아 두면 좋은 것</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/calendar-22.webp" class="zoom" data-cap="06 캘린더 · 캘린더 단축키 목록"><img src="assets/img/calendar-22.webp" width="1280" height="800" alt="캘린더 단축키 목록" loading="lazy" /></a><figcaption><b>캘린더 단축키 목록</b><span>단축키는 ? 를 누르면 언제든 볼 수 있습니다. 키하는 일t오늘j / n, k / p다음 기간, 이전 기간1/d, 2/w, 3/m, 4/x, 5/a일, 주, 월, 4일, 일정 보기c일정 만들기e, Delete열린 일정 수정, 삭제/검색r새로고침Esc닫기</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-23.webp" class="zoom" data-cap="06 캘린더 · 좁은 창에서 접힌 왼쪽 칸과 목록 단추"><img src="assets/img/calendar-23.webp" width="640" height="800" alt="좁은 창에서 접힌 왼쪽 칸과 목록 단추" loading="lazy" /></a><figcaption><b>좁은 창에서 접힌 왼쪽 칸과 목록 단추</b><span>창이 좁으면 왼쪽 칸(작은 달력·캘린더 목록·조직도)이 접힙니다. 왼쪽 위 「캘린더 목록」 단추를 눌러 펼칩니다.</span></figcaption></figure>
+        <figure><a href="assets/img/calendar-24.webp" class="zoom" data-cap="06 캘린더 · 다크 테마"><img src="assets/img/calendar-24.webp" width="1280" height="800" alt="다크 테마" loading="lazy" /></a><figcaption><b>다크 테마</b><span>다크 테마에서도 같은 구성으로 보입니다.</span></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-meeting">
+      <div class="gch-head"><div class="no">07 회의록</div><h2>PC 안에서 받아쓰기</h2><p>녹음과 받아쓰기는 이 PC에만 남고, 요약할 때만 받아쓴 글이 고른 모델(기본 KAP)로 갑니다. 요약·결정·할 일 정리, 화자 이름 붙이기. <a href="guide/boost-one-guide.html#page-meeting">원문 설명 보기 →</a></p><span class="cnt">그림 19장</span></div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%ED%9A%8C%EC%9D%98%EB%A1%9D-%ED%99%94%EB%A9%B4-%EC%97%B4%EA%B8%B0">회의록 화면 열기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-01.webp" class="zoom" data-cap="07 회의록 · 레일 「캘린더」 옆에 나온 「회의록」 단추"><img src="assets/img/meeting-01.webp" width="1280" height="800" alt="레일 「캘린더」 옆에 나온 「회의록」 단추" loading="lazy" /></a><figcaption><b>레일 「캘린더」 옆에 나온 「회의록」 단추</b><span>왼쪽 레일 「캘린더」에 마우스를 올리면 옆에 「회의록」 단추가 나옵니다. 「회의록」을 누릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-02.webp" class="zoom" data-cap="07 회의록 · 회의록 목록과 「녹음 시작」"><img src="assets/img/meeting-02.webp" width="1280" height="800" alt="회의록 목록과 「녹음 시작」" loading="lazy" /></a><figcaption><b>회의록 목록과 「녹음 시작」</b><span>왼쪽에 지난 회의 목록이, 오른쪽 위에 「녹음 시작」이 보입니다. 목록 줄 오른쪽 표시는 그 회의의 상태입니다(「녹음 중」「받아쓰는 중」「일부 빠짐」「실패」 등).</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-03.webp" class="zoom" data-cap="07 회의록 · 회의 녹음 개인정보 안내"><img src="assets/img/meeting-03.webp" width="1280" height="800" alt="회의 녹음 개인정보 안내" loading="lazy" /></a><figcaption><b>회의 녹음 개인정보 안내</b><span>처음 쓸 때 「회의 녹음은 이 PC에만 남습니다」 안내가 뜹니다. 녹음한 소리는 서버로 보내지 않고, 받아쓰기도 이 PC에서 합니다. 요약할 때만 받아쓴 글이 고른 모델(기본 KAP)로 갑니다. 「확인」을 누릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%EB%85%B9%EC%9D%8C-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0">녹음 시작하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-04.webp" class="zoom" data-cap="07 회의록 · 새 회의 녹음 창. 1 녹음할 소리 고르기, 2 녹음 시작"><img src="assets/img/meeting-04.webp" width="1280" height="800" alt="새 회의 녹음 창. 1 녹음할 소리 고르기, 2 녹음 시작" loading="lazy" /></a><figcaption><b>새 회의 녹음 창. 1 녹음할 소리 고르기, 2 녹음 시작</b><span>무엇을 녹음할지 고릅니다. 「마이크」: 내 마이크 소리만 「나」로 받아씁니다. 회의실에서 함께 있는 회의에 맞습니다.「마이크+시스템 소리」: 화상회의 상대 목소리를 「상대」로 따로 받아씁니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-05.webp" class="zoom" data-cap="07 회의록 · 녹음 중 띠"><img src="assets/img/meeting-05.webp" width="1280" height="800" alt="녹음 중 띠" loading="lazy" /></a><figcaption><b>녹음 중 띠</b><span>「녹음 시작」을 누릅니다. 창 위 가운데에 녹음 띠가 서고, 목록 맨 위에 새 회의가 「녹음 중」으로 생깁니다. 띠에는 지난 시간과 소리 크기 막대가 보입니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%EC%BA%98%EB%A6%B0%EB%8D%94-%EC%9D%BC%EC%A0%95%EC%97%90-%EB%A7%9E%EC%B6%B0-%EB%85%B9%EC%9D%8C-%EC%98%88%EC%95%BD%ED%95%98%EA%B8%B0">캘린더 일정에 맞춰 녹음 예약하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-06.webp" class="zoom" data-cap="07 회의록 · 예정된 녹음과 「취소」"><img src="assets/img/meeting-06.webp" width="1280" height="800" alt="예정된 녹음과 「취소」" loading="lazy" /></a><figcaption><b>예정된 녹음과 「취소」</b><span>회의록 목록 맨 위 「예정된 녹음」에 그 일정이 「예정」으로 보입니다. 예약을 거두려면 그 줄의 「취소」를 누릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%ED%9A%8C%EC%9D%98%EB%A1%9D-%EB%B3%B4%EA%B8%B0">회의록 보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-07.webp" class="zoom" data-cap="07 회의록 · 회의록 요약. 1 요약·받아쓴 글 탭, 2 회의록 도구"><img src="assets/img/meeting-07.webp" width="1280" height="800" alt="회의록 요약. 1 요약·받아쓴 글 탭, 2 회의록 도구" loading="lazy" /></a><figcaption><b>회의록 요약. 1 요약·받아쓴 글 탭, 2 회의록 도구</b><span>「요약」 탭에는 요약·결정·할 일·주제가 정리돼 있습니다. 「대화 보기」를 누르면 그 내용이 나온 받아쓴 글로 갑니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-08.webp" class="zoom" data-cap="07 회의록 · 받아쓴 글과 찾기 칸"><img src="assets/img/meeting-08.webp" width="1280" height="800" alt="받아쓴 글과 찾기 칸" loading="lazy" /></a><figcaption><b>받아쓴 글과 찾기 칸</b><span>「받아쓴 글」 탭에는 시각별로 받아쓴 말이 있습니다. 「받아쓴 글에서 찾기」로 낱말을 찾습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%ED%99%94%EC%9E%90-%EC%9D%B4%EB%A6%84-%EB%B6%99%EC%9D%B4%EA%B8%B0">화자 이름 붙이기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-09.webp" class="zoom" data-cap="07 회의록 · 화자 칩"><img src="assets/img/meeting-09.webp" width="1280" height="800" alt="화자 칩" loading="lazy" /></a><figcaption><b>화자 칩</b><span>회의를 열면 제목 아래에 화자 칩(「화자1 3줄」 등)이 보입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-10.webp" class="zoom" data-cap="07 회의록 · 화자 메뉴"><img src="assets/img/meeting-10.webp" width="1280" height="800" alt="화자 메뉴" loading="lazy" /></a><figcaption><b>화자 메뉴</b><span>칩을 누르면 메뉴가 열립니다. 「참석자에서 고르기」에서 이름을 누르거나, 「이름 직접 입력」에 쓰고 「저장」을 누릅니다. 같은 사람이 둘로 나뉘었으면 「다른 화자와 합치기」에서 합칠 화자를 고릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-11.webp" class="zoom" data-cap="07 회의록 · 이름을 붙인 화자와 다시 요약 묻기"><img src="assets/img/meeting-11.webp" width="1280" height="800" alt="이름을 붙인 화자와 다시 요약 묻기" loading="lazy" /></a><figcaption><b>이름을 붙인 화자와 다시 요약 묻기</b><span>이름을 붙이면 받아쓴 글의 화자 이름이 바뀝니다. 요약에도 새 이름을 쓰려면 「요약을 새 이름으로 다시 만들까요?」 옆 「다시 요약」을 누릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%EC%A0%9C%EB%AA%A9-%EB%B0%94%EA%BE%B8%EA%B8%B0">제목 바꾸기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-12.webp" class="zoom" data-cap="07 회의록 · 제목 바꾸기 칸"><img src="assets/img/meeting-12.webp" width="1280" height="800" alt="제목 바꾸기 칸" loading="lazy" /></a><figcaption><b>제목 바꾸기 칸</b><span>새 제목을 쓰고 Enter 를 누릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%ED%9A%8C%EC%9D%98%EB%A1%9D-%EC%A7%80%EC%9A%B0%EA%B8%B0">회의록 지우기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-13.webp" class="zoom" data-cap="07 회의록 · 회의록 삭제 확인"><img src="assets/img/meeting-13.webp" width="1280" height="800" alt="회의록 삭제 확인" loading="lazy" /></a><figcaption><b>회의록 삭제 확인</b><span>「이 회의록과 음성을 모두 지울까요?」에서 「삭제」를 누릅니다. 목록에서 빠집니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%EC%9A%94%EC%95%BD%EC%9D%B4-%EC%8B%A4%ED%8C%A8%ED%96%88%EC%9D%84-%EB%95%8C">요약이 실패했을 때</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-14.webp" class="zoom" data-cap="07 회의록 · 요약 실패 회의"><img src="assets/img/meeting-14.webp" width="1280" height="800" alt="요약 실패 회의" loading="lazy" /></a><figcaption><b>요약 실패 회의</b><span>목록에 「실패」가 붙은 회의를 엽니다. 「요약에 실패했으니 잠시 뒤 다시 요약을 눌러 주세요.」가 보입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-15.webp" class="zoom" data-cap="07 회의록 · 요약 모델 고르기"><img src="assets/img/meeting-15.webp" width="1280" height="800" alt="요약 모델 고르기" loading="lazy" /></a><figcaption><b>요약 모델 고르기</b><span>「요약하기」(요약이 있으면 「다시 요약」)를 누르면 「회의 요약」 창이 뜹니다. 모델을 고르고 「요약하기」를 누릅니다. 「항상 이 모델 사용하기」를 켜면 다음부터 묻지 않습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#meeting--s-%EC%95%8C%EC%95%84-%EB%91%90%EB%A9%B4-%EC%A2%8B%EC%9D%80-%EA%B2%83">알아 두면 좋은 것</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/meeting-16.webp" class="zoom" data-cap="07 회의록 · 회의 녹음이 꺼져 있을 때"><img src="assets/img/meeting-16.webp" width="1280" height="800" alt="회의 녹음이 꺼져 있을 때" loading="lazy" /></a><figcaption><b>회의 녹음이 꺼져 있을 때</b><span>회의 녹음이 꺼져 있으면 목록 위에 「회의 녹음을 켜야 새로 녹음할 수 있습니다.」가 보입니다. 옆 스위치를 켜면 녹음할 수 있습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-17.webp" class="zoom" data-cap="07 회의록 · 받아쓰기 파일 받기 안내"><img src="assets/img/meeting-17.webp" width="1280" height="800" alt="받아쓰기 파일 받기 안내" loading="lazy" /></a><figcaption><b>받아쓰기 파일 받기 안내</b><span>처음 녹음하려면 받아쓰기 파일을 한 번 받아야 합니다. 「새 회의 녹음」 창의 「받기」를 누르고 다 받은 뒤 녹음을 시작합니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-18.webp" class="zoom" data-cap="07 회의록 · 마이크를 열지 못했을 때"><img src="assets/img/meeting-18.webp" width="1280" height="800" alt="마이크를 열지 못했을 때" loading="lazy" /></a><figcaption><b>마이크를 열지 못했을 때</b><span>마이크를 열지 못하면 「마이크를 찾지 못했거나 다른 앱이 쓰고 있습니다.」가 뜹니다. 다른 화상회의 앱이 마이크를 잡고 있지 않은지, 맥 설정에서 Boost One 의 마이크 권한이 켜져 있는지 확인합니다.</span></figcaption></figure>
+        <figure><a href="assets/img/meeting-19.webp" class="zoom" data-cap="07 회의록 · 좁은 창의 회의록"><img src="assets/img/meeting-19.webp" width="640" height="800" alt="좁은 창의 회의록" loading="lazy" /></a><figcaption><b>좁은 창의 회의록</b><span>창이 좁으면 목록이 접혀 덮개로 섭니다. 회의를 고르면 상세가 열리고, 「목록」으로 돌아갑니다.</span></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-rules">
+      <div class="gch-head"><div class="no">08 자동 규칙</div><h2>조건·시각으로 자동 위임</h2><p>정한 조건의 메시지가 오거나 정한 시각이 되면 비서나 세션에 일을 건넵니다. 저장 전 시험, 켜고 끄기, 실행 기록. <a href="guide/boost-one-guide.html#page-rules">원문 설명 보기 →</a></p><span class="cnt">그림 19장</span></div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EC%9E%90%EB%8F%99-%EA%B7%9C%EC%B9%99-%ED%99%94%EB%A9%B4-%EC%97%B4%EA%B8%B0">자동 규칙 화면 열기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-01.webp" class="zoom" data-cap="08 자동 규칙 · 레일 「피드」 옆에 나온 「자동 규칙」 단추"><img src="assets/img/rules-01.webp" width="1280" height="800" alt="레일 「피드」 옆에 나온 「자동 규칙」 단추" loading="lazy" /></a><figcaption><b>레일 「피드」 옆에 나온 「자동 규칙」 단추</b><span>왼쪽 레일 「피드」에 마우스를 올리면 옆에 「자동 규칙」 단추가 나옵니다. 「자동 규칙」을 누릅니다. 확인할 규칙이 있으면 「피드」에 빨간 점이, 「자동 규칙」에 숫자가 붙습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/rules-02.webp" class="zoom" data-cap="08 자동 규칙 · 자동 규칙 화면. 1 거르기, 2 새 규칙, 3 켜기·끄기, 4 더 보기"><img src="assets/img/rules-02.webp" width="1280" height="800" alt="자동 규칙 화면. 1 거르기, 2 새 규칙, 3 켜기·끄기, 4 더 보기" loading="lazy" /></a><figcaption><b>자동 규칙 화면. 1 거르기, 2 새 규칙, 3 켜기·끄기, 4 더 보기</b><span>왼쪽에 규칙 목록이, 오른쪽에 고른 규칙의 내용이 보입니다. 「전체」「켜짐」「확인 필요」: 목록 거르기. 「확인 필요」는 최근 실패했거나 오류가 있는 규칙입니다.「새 규칙」: 규칙 만들기켜짐 스위치: 이 규칙을 켜고 끄기「⋯」: 복제·삭제</span></figcaption></figure>
+        <figure><a href="assets/img/rules-03.webp" class="zoom" data-cap="08 자동 규칙 · 규칙이 없을 때의 시작 카드"><img src="assets/img/rules-03.webp" width="1280" height="800" alt="규칙이 없을 때의 시작 카드" loading="lazy" /></a><figcaption><b>규칙이 없을 때의 시작 카드</b><span>규칙이 하나도 없으면 시작 카드가 보입니다. 카드(「장애 키워드 → 요약」 등)를 누르면 그 내용이 채워진 새 규칙으로 시작합니다. 「빈 규칙으로 시작」은 빈 규칙입니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EB%A9%94%EC%8B%9C%EC%A7%80%EB%A1%9C-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%EA%B7%9C%EC%B9%99-%EB%A7%8C%EB%93%A4%EA%B8%B0">메시지로 시작하는 규칙 만들기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-04.webp" class="zoom" data-cap="08 자동 규칙 · 새 규칙의 「언제」 칸"><img src="assets/img/rules-04.webp" width="1280" height="800" alt="새 규칙의 「언제」 칸" loading="lazy" /></a><figcaption><b>새 규칙의 「언제」 칸</b><span>「새 규칙」을 누릅니다. 위쪽 「규칙 이름」에 이름을 씁니다.</span></figcaption></figure>
+        <figure><a href="assets/img/rules-05.webp" class="zoom" data-cap="08 자동 규칙 · 방 고르기"><img src="assets/img/rules-05.webp" width="1280" height="800" alt="방 고르기" loading="lazy" /></a><figcaption><b>방 고르기</b><span>「방 추가」를 누르고 규칙을 걸 방을 고릅니다. 이름으로 찾을 수 있고, 여러 방을 고를 수 있습니다. 1:1 대화는 고를 수 없습니다. 아지트는 「그룹 고르기」로 그룹을 고르거나 「나에게 온 글 전체」를 고릅니다.</span></figcaption></figure>
+        <figure><a href="assets/img/rules-06.webp" class="zoom" data-cap="08 자동 규칙 · 방과 낱말을 정한 모습"><img src="assets/img/rules-06.webp" width="1280" height="800" alt="방과 낱말을 정한 모습" loading="lazy" /></a><figcaption><b>방과 낱말을 정한 모습</b><span>「어떤 메시지」의 「내용」에 걸 낱말을 씁니다. 쉼표로 여러 개를 적으면 그중 하나만 들어 있어도 걸립니다. 비워 두면 그 방의 모든 메시지가 걸립니다. 「제외 단어」에 쓴 낱말이 하나라도 있으면 걸리지 않습니다.</span></figcaption></figure>
+        <figure><a href="assets/img/rules-07.webp" class="zoom" data-cap="08 자동 규칙 · 보낸 사람 고르기(아지트)"><img src="assets/img/rules-07.webp" width="1280" height="800" alt="보낸 사람 고르기(아지트)" loading="lazy" /></a><figcaption><b>보낸 사람 고르기(아지트)</b><span>특정 사람의 글에만 걸려면 「보낸 사람 추가」를 누르고 사람을 고릅니다. 고르지 않으면 누가 보내도 걸립니다. 메일은 주소를 쓰고 Enter 를 누르면 더해집니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EB%B3%B4%EB%82%BC-%EA%B3%B3%EA%B3%BC-%ED%95%A0-%EC%9D%BC-%EC%A0%95%ED%95%98%EA%B8%B0">보낼 곳과 할 일 정하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-08.webp" class="zoom" data-cap="08 자동 규칙 · 보낼 곳 고르기"><img src="assets/img/rules-08.webp" width="1280" height="800" alt="보낼 곳 고르기" loading="lazy" /></a><figcaption><b>보낼 곳 고르기</b><span>「할 일」의 「보낼 곳」을 누릅니다. 「비서」: 맞는 세션을 골라 한 번 넘깁니다.「세션」 아래 줄: 그 세션에 건넵니다.「새 세션 만들기」: 이 규칙의 일만 받는 세션을 엽니다.</span></figcaption></figure>
+        <figure><a href="assets/img/rules-09.webp" class="zoom" data-cap="08 자동 규칙 · 건넬 말"><img src="assets/img/rules-09.webp" width="1280" height="800" alt="건넬 말" loading="lazy" /></a><figcaption><b>건넬 말</b><span>「건넬 말」에 무엇을 시킬지 씁니다. 위쪽 칩(「방 이름」「보낸 사람」「본문」「링크」「시각」 등)을 누르면 그 값이 들어갈 자리가 글에 끼워집니다. 걸린 메시지 본문은 이 말 아래에 인용으로 붙습니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B8%B0-%EC%A0%84%EC%97%90-%EC%8B%9C%ED%97%98%ED%95%98%EA%B8%B0">저장하기 전에 시험하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-10.webp" class="zoom" data-cap="08 자동 규칙 · 지난 24시간 시험 결과"><img src="assets/img/rules-10.webp" width="1280" height="800" alt="지난 24시간 시험 결과" loading="lazy" /></a><figcaption><b>지난 24시간 시험 결과</b><span>결과에 걸린 메시지 예가 보입니다. 걸리지 말아야 할 메시지라면 그 줄의 「이 단어 빼기」를 누릅니다. 조건을 바꾼 뒤 「다시 시험」을 누릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B8%B0">저장하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-11.webp" class="zoom" data-cap="08 자동 규칙 · 저장한 새 규칙"><img src="assets/img/rules-11.webp" width="1280" height="800" alt="저장한 새 규칙" loading="lazy" /></a><figcaption><b>저장한 새 규칙</b><span>목록에 「저장함 · 지금부터 발동」이 보입니다. 저장한 뒤에 오는 메시지부터 발동합니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%ED%94%BC%EB%93%9C-%EB%B0%A9%EC%97%90%EC%84%9C-%EB%B0%94%EB%A1%9C-%EA%B7%9C%EC%B9%99-%EB%A7%8C%EB%93%A4%EA%B8%B0">피드 방에서 바로 규칙 만들기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-12.webp" class="zoom" data-cap="08 자동 규칙 · 피드 방 머리의 ⋯ 메뉴"><img src="assets/img/rules-12.webp" width="1280" height="800" alt="피드 방 머리의 ⋯ 메뉴" loading="lazy" /></a><figcaption><b>피드 방 머리의 ⋯ 메뉴</b><span>「이 방에 규칙 만들기」를 누릅니다. 이미 걸린 규칙이 있으면 「이 방에 걸린 규칙 N개」도 함께 보이고, 누르면 그 규칙들이 열립니다.</span></figcaption></figure>
+        <figure><a href="assets/img/rules-13.webp" class="zoom" data-cap="08 자동 규칙 · 피드 방이 들어간 새 규칙"><img src="assets/img/rules-13.webp" width="1280" height="800" alt="피드 방이 들어간 새 규칙" loading="lazy" /></a><figcaption><b>피드 방이 들어간 새 규칙</b><span>자동 규칙 화면이 열리고 그 방이 이미 들어간 새 규칙이 만들어집니다. 낱말과 할 일을 정하고 「저장하고 켜기」를 누릅니다. 왼쪽 위 「‹ 피드」를 누르면 피드로 돌아갑니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EC%A0%95%ED%95%B4%EC%A7%84-%EC%8B%9C%EA%B0%81%EC%97%90-%EB%8F%84%EB%8A%94-%EA%B7%9C%EC%B9%99-%EB%A7%8C%EB%93%A4%EA%B8%B0">정해진 시각에 도는 규칙 만들기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-14.webp" class="zoom" data-cap="08 자동 규칙 · 정해진 시각 규칙"><img src="assets/img/rules-14.webp" width="1280" height="800" alt="정해진 시각 규칙" loading="lazy" /></a><figcaption><b>정해진 시각 규칙</b><span>오른쪽 「다음 실행」에 다음 시각들이 보입니다. 「지금 한 번 실행」을 누르면 시각을 기다리지 않고 바로 한 번 돌려 봅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EC%BC%9C%EA%B3%A0-%EB%81%84%EA%B8%B0">켜고 끄기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-15.webp" class="zoom" data-cap="08 자동 규칙 · 목록에서 규칙 켜기"><img src="assets/img/rules-15.webp" width="1280" height="800" alt="목록에서 규칙 켜기" loading="lazy" /></a><figcaption><b>목록에서 규칙 켜기</b><span>목록 줄 오른쪽 스위치나 규칙 머리의 「켜짐」 스위치를 누릅니다. 꺼진 규칙은 목록에서 흐리게 「꺼짐」으로 보입니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EC%A7%80%EC%9A%B0%EA%B8%B0%EC%99%80-%EB%B3%B5%EC%A0%9C">지우기와 복제</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-16.webp" class="zoom" data-cap="08 자동 규칙 · ⋯ 메뉴"><img src="assets/img/rules-16.webp" width="1280" height="800" alt="⋯ 메뉴" loading="lazy" /></a><figcaption><b>⋯ 메뉴</b><span>규칙을 고르고 머리 오른쪽 「⋯」를 누릅니다. 「복제」 또는 「삭제」가 보입니다.</span></figcaption></figure>
+        <figure><a href="assets/img/rules-17.webp" class="zoom" data-cap="08 자동 규칙 · 삭제 확인"><img src="assets/img/rules-17.webp" width="1280" height="800" alt="삭제 확인" loading="lazy" /></a><figcaption><b>삭제 확인</b><span>「삭제」를 누르면 「「규칙 이름」 규칙을 지울까요?」가 뜹니다. 발동 기록도 함께 지워집니다. 「지우기」를 누릅니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EA%B8%B0%EB%A1%9D-%EB%B3%B4%EA%B8%B0">기록 보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-18.webp" class="zoom" data-cap="08 자동 규칙 · 규칙 기록"><img src="assets/img/rules-18.webp" width="1280" height="800" alt="규칙 기록" loading="lazy" /></a><figcaption><b>규칙 기록</b><span>「문제만」을 누르면 실패하거나 건네지 못한 것만 봅니다. 줄을 누르면 원문과 실패 이유가 펼쳐지고, 「피드에서 보기」로 원래 메시지로 갑니다.</span></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#rules--s-%EC%95%8C%EC%95%84-%EB%91%90%EB%A9%B4-%EC%A2%8B%EC%9D%80-%EA%B2%83">알아 두면 좋은 것</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/rules-19.webp" class="zoom" data-cap="08 자동 규칙 · 피드가 꺼져 규칙이 쉴 때"><img src="assets/img/rules-19.webp" width="1280" height="800" alt="피드가 꺼져 규칙이 쉴 때" loading="lazy" /></a><figcaption><b>피드가 꺼져 규칙이 쉴 때</b><span>규칙은 피드가 모은 메시지로 돕니다. 피드가 꺼져 있으면 「피드가 꺼져 있어 규칙이 쉽니다.」가 보이고 규칙이 돌지 않습니다. 「피드 켜기」를 누릅니다.</span></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-viking">
+      <div class="gch-head"><div class="no">09 바이킹 탭</div><h2>사내 앱을 말로 고치기</h2><p>바이킹(사내 앱 플랫폼)에 올린 앱 하나를 골라 에이전트에게 화면·데이터 수정을 맡깁니다. 앱 방으로 동료와 함께 작업. <a href="guide/boost-one-guide.html#page-viking">원문 설명 보기 →</a></p><span class="cnt">그림 18장</span></div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%ED%99%94%EB%A9%B4-%EA%B5%AC%EC%84%B1">화면 구성</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-01.webp" class="zoom" data-cap="09 바이킹 탭 · 바이킹 화면 구성"><img src="assets/img/viking-01.webp" width="1280" height="800" alt="바이킹 화면 구성" loading="lazy" /></a><figcaption><b>바이킹 화면 구성</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%95%B1-%EB%AA%A9%EB%A1%9D%EC%97%90%EC%84%9C-%EC%95%B1-%EA%B3%A0%EB%A5%B4%EA%B8%B0">앱 목록에서 앱 고르기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-02.webp" class="zoom" data-cap="09 바이킹 탭 · 앱 목록"><img src="assets/img/viking-02.webp" width="1280" height="800" alt="앱 목록" loading="lazy" /></a><figcaption><b>앱 목록</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%95%B1-%EC%B0%BE%EA%B8%B0">앱 찾기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-03.webp" class="zoom" data-cap="09 바이킹 탭 · 앱 검색"><img src="assets/img/viking-03.webp" width="1280" height="800" alt="앱 검색" loading="lazy" /></a><figcaption><b>앱 검색</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%95%B1-%EB%A9%94%EB%89%B4-%EC%93%B0%EA%B8%B0%EC%A6%90%EA%B2%A8%EC%B0%BE%EA%B8%B0%EC%9D%B4%EB%A6%84-%EB%B3%80%EA%B2%BD%EC%97%B4%EA%B8%B0%EC%BD%98%EC%86%94">앱 메뉴 쓰기(즐겨찾기·이름 변경·열기·콘솔)</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-04.webp" class="zoom" data-cap="09 바이킹 탭 · 앱 ⋯ 메뉴"><img src="assets/img/viking-04.webp" width="1280" height="800" alt="앱 ⋯ 메뉴" loading="lazy" /></a><figcaption><b>앱 ⋯ 메뉴</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%95%B1-%EC%9D%B4%EB%A6%84-%EB%B0%94%EA%BE%B8%EA%B8%B0">앱 이름 바꾸기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-05.webp" class="zoom" data-cap="09 바이킹 탭 · 이름 바꾸기"><img src="assets/img/viking-05.webp" width="1280" height="800" alt="이름 바꾸기" loading="lazy" /></a><figcaption><b>이름 바꾸기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%83%88-%EC%95%B1-%EB%A7%8C%EB%93%A4%EA%B8%B0">새 앱 만들기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-06.webp" class="zoom" data-cap="09 바이킹 탭 · 새 앱 만들기"><img src="assets/img/viking-06.webp" width="1280" height="800" alt="새 앱 만들기" loading="lazy" /></a><figcaption><b>새 앱 만들기</b></figcaption></figure>
+        <figure><a href="assets/img/viking-07.webp" class="zoom" data-cap="09 바이킹 탭 · 코드 규칙 오류"><img src="assets/img/viking-07.webp" width="1280" height="800" alt="코드 규칙 오류" loading="lazy" /></a><figcaption><b>코드 규칙 오류</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%95%B1-%EC%97%B4%EA%B8%B0%EC%BD%98%EC%86%94%EC%B5%9C%EC%8B%A0-%EB%B0%9B%EC%95%84%EC%98%A4%EA%B8%B0">앱 열기·콘솔·최신 받아오기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-08.webp" class="zoom" data-cap="09 바이킹 탭 · 앱 머리 단추"><img src="assets/img/viking-08.webp" width="1280" height="800" alt="앱 머리 단추" loading="lazy" /></a><figcaption><b>앱 머리 단추</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8%EC%97%90%EA%B2%8C-%EC%9D%BC-%EB%A7%A1%EA%B8%B0%EA%B8%B0">에이전트에게 일 맡기기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-09.webp" class="zoom" data-cap="09 바이킹 탭 · 입력창"><img src="assets/img/viking-09.webp" width="1280" height="800" alt="입력창" loading="lazy" /></a><figcaption><b>입력창</b></figcaption></figure>
+        <figure><a href="assets/img/viking-10.webp" class="zoom" data-cap="09 바이킹 탭 · 에이전트 고르기"><img src="assets/img/viking-10.webp" width="1280" height="800" alt="에이전트 고르기" loading="lazy" /></a><figcaption><b>에이전트 고르기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%9D%BC%ED%95%98%EB%8A%94-%EC%A4%91%EC%97%90-%EB%A7%90-%EB%8D%94%ED%95%98%EA%B8%B0">일하는 중에 말 더하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-11.webp" class="zoom" data-cap="09 바이킹 탭 · 다음에 보낼 말"><img src="assets/img/viking-11.webp" width="1280" height="800" alt="다음에 보낼 말" loading="lazy" /></a><figcaption><b>다음에 보낼 말</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%8A%B9%EC%9D%B8-%EC%B9%B4%EB%93%9C%EC%99%80-%EC%84%A0%ED%83%9D-%EC%B9%B4%EB%93%9C%EC%97%90-%EB%8B%B5%ED%95%98%EA%B8%B0">승인 카드와 선택 카드에 답하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-12.webp" class="zoom" data-cap="09 바이킹 탭 · 승인 카드"><img src="assets/img/viking-12.webp" width="1280" height="800" alt="승인 카드" loading="lazy" /></a><figcaption><b>승인 카드</b></figcaption></figure>
+        <figure><a href="assets/img/viking-13.webp" class="zoom" data-cap="09 바이킹 탭 · 선택 카드"><img src="assets/img/viking-13.webp" width="1280" height="800" alt="선택 카드" loading="lazy" /></a><figcaption><b>선택 카드</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%ED%83%AD-%EB%8B%A4%EB%A3%A8%EA%B8%B0">탭 다루기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-14.webp" class="zoom" data-cap="09 바이킹 탭 · 탭 우클릭 메뉴"><img src="assets/img/viking-14.webp" width="1280" height="800" alt="탭 우클릭 메뉴" loading="lazy" /></a><figcaption><b>탭 우클릭 메뉴</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EB%8F%99%EB%A3%8C%EC%99%80-%ED%95%A8%EA%BB%98-%EC%93%B0%EA%B8%B0%EC%95%B1-%EB%B0%A9">동료와 함께 쓰기(앱 방)</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-15.webp" class="zoom" data-cap="09 바이킹 탭 · 동료 초대"><img src="assets/img/viking-15.webp" width="1280" height="800" alt="동료 초대" loading="lazy" /></a><figcaption><b>동료 초대</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%A2%81%EC%9D%80-%EC%B0%BD%EC%97%90%EC%84%9C-%EC%93%B0%EA%B8%B0">좁은 창에서 쓰기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-16.webp" class="zoom" data-cap="09 바이킹 탭 · 좁은 창"><img src="assets/img/viking-16.webp" width="640" height="720" alt="좁은 창" loading="lazy" /></a><figcaption><b>좁은 창</b></figcaption></figure>
+        <figure><a href="assets/img/viking-17.webp" class="zoom" data-cap="09 바이킹 탭 · ⋯ 메뉴"><img src="assets/img/viking-17.webp" width="640" height="720" alt="⋯ 메뉴" loading="lazy" /></a><figcaption><b>⋯ 메뉴</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#viking--s-%EC%96%B4%EB%91%90%EC%9A%B4-%ED%99%94%EB%A9%B4">어두운 화면</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/viking-18.webp" class="zoom" data-cap="09 바이킹 탭 · 어두운 테마"><img src="assets/img/viking-18.webp" width="1280" height="800" alt="어두운 테마" loading="lazy" /></a><figcaption><b>어두운 테마</b></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-remote">
+      <div class="gch-head"><div class="no">10 카카오워크로 원격 제어</div><h2>카카오워크로 PC에 일 맡기기</h2><p>밖에서 비서 1:1 DM으로 일을 맡기고, 대화별 세션 방을 만들고, 자리 비운 사이의 승인·질문에 카카오워크로 답합니다. <a href="guide/boost-one-guide.html#page-remote">원문 설명 보기 →</a></p><span class="cnt">그림 11장</span></div>
+      <h3><a href="guide/boost-one-guide.html#remote--s-%EC%9B%90%EA%B2%A9-%EC%A0%9C%EC%96%B4-%EC%BC%9C%EA%B8%B0">원격 제어 켜기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/remote-01.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 원격 제어 켜기"><img src="assets/img/remote-01.webp" width="1280" height="800" alt="원격 제어 켜기" loading="lazy" /></a><figcaption><b>원격 제어 켜기</b></figcaption></figure>
+        <figure><a href="assets/img/remote-02.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 로그인 전"><img src="assets/img/remote-02.webp" width="1280" height="800" alt="로그인 전" loading="lazy" /></a><figcaption><b>로그인 전</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#remote--s-%EB%8C%80%ED%99%94%EB%B3%84-%EC%B9%B4%EC%B9%B4%EC%98%A4%EC%9B%8C%ED%81%AC-%EB%B0%A9-%EB%A7%8C%EB%93%A4%EA%B8%B0%EC%84%B8%EC%85%98-%EB%B0%A9">대화별 카카오워크 방 만들기(세션 방)</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/remote-03.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 세션 방 만들기"><img src="assets/img/remote-03.webp" width="1280" height="800" alt="세션 방 만들기" loading="lazy" /></a><figcaption><b>세션 방 만들기</b></figcaption></figure>
+        <figure><a href="assets/img/remote-04.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 세션 방이 이어진 대화"><img src="assets/img/remote-04.webp" width="1280" height="800" alt="세션 방이 이어진 대화" loading="lazy" /></a><figcaption><b>세션 방이 이어진 대화</b></figcaption></figure>
+        <figure><a href="assets/img/remote-05.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 원격 제어가 꺼져 있을 때"><img src="assets/img/remote-05.webp" width="1280" height="800" alt="원격 제어가 꺼져 있을 때" loading="lazy" /></a><figcaption><b>원격 제어가 꺼져 있을 때</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#remote--s-%EC%84%B8%EC%85%98-%EB%B0%A9-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">세션 방 관리하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/remote-06.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 세션 방 관리"><img src="assets/img/remote-06.webp" width="1280" height="800" alt="세션 방 관리" loading="lazy" /></a><figcaption><b>세션 방 관리</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#remote--s-%EB%8F%99%EB%A3%8C%EC%99%80-%EC%B9%B4%EC%B9%B4%EC%98%A4%EC%9B%8C%ED%81%AC-%EA%B7%B8%EB%A3%B9%EB%B0%A9%EC%9C%BC%EB%A1%9C-%ED%95%A8%EA%BB%98-%EC%93%B0%EA%B8%B0%EC%A4%91%EA%B3%84">동료와 카카오워크 그룹방으로 함께 쓰기(중계)</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/remote-07.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 멤버와 카카오워크 방 만들기"><img src="assets/img/remote-07.webp" width="1280" height="800" alt="멤버와 카카오워크 방 만들기" loading="lazy" /></a><figcaption><b>멤버와 카카오워크 방 만들기</b></figcaption></figure>
+        <figure><a href="assets/img/remote-08.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 연결된 그룹방과 요청 받기"><img src="assets/img/remote-08.webp" width="1280" height="800" alt="연결된 그룹방과 요청 받기" loading="lazy" /></a><figcaption><b>연결된 그룹방과 요청 받기</b></figcaption></figure>
+        <figure><a href="assets/img/remote-09.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 그룹방 열기·연결 끊기"><img src="assets/img/remote-09.webp" width="1280" height="800" alt="그룹방 열기·연결 끊기" loading="lazy" /></a><figcaption><b>그룹방 열기·연결 끊기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#remote--s-%EB%8B%A4%EB%A5%B8-PC%EC%97%90%EC%84%9C-%EC%93%B8-%EB%95%8C">다른 PC에서 쓸 때</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/remote-10.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 이 PC에서 받기"><img src="assets/img/remote-10.webp" width="1280" height="800" alt="이 PC에서 받기" loading="lazy" /></a><figcaption><b>이 PC에서 받기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#remote--s-%EC%9E%90%EB%A6%AC-%EB%B9%84%EC%9B%80-%EC%95%8C%EB%A6%BC-%EB%B0%9B%EA%B8%B0">자리 비움 알림 받기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/remote-11.webp" class="zoom" data-cap="10 카카오워크로 원격 제어 · 자리 비움 설정"><img src="assets/img/remote-11.webp" width="1280" height="800" alt="자리 비움 설정" loading="lazy" /></a><figcaption><b>자리 비움 설정</b></figcaption></figure>
+      </div>
+    </section>
+    <section class="gch" id="g-market">
+      <div class="gch-head"><div class="no">11 마켓</div><h2>스킬·플러그인 공유</h2><p>동료가 올린 스킬을 설치해 주간 보고·회의록 정리 같은 반복 업무를 맡기고, 플러그인으로 Sentry·Notion 같은 외부 서비스를 연결합니다. <a href="guide/boost-one-guide.html#page-market">원문 설명 보기 →</a></p><span class="cnt">그림 10장</span></div>
+      <h3><a href="guide/boost-one-guide.html#market--s-%EB%A7%88%EC%BC%93-%EB%91%98%EB%9F%AC%EB%B3%B4%EA%B8%B0">마켓 둘러보기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/market-01.webp" class="zoom" data-cap="11 마켓 · 스킬 화면"><img src="assets/img/market-01.webp" width="1280" height="800" alt="스킬 화면" loading="lazy" /></a><figcaption><b>스킬 화면</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#market--s-%EC%8A%A4%ED%82%AC-%EC%B0%BE%EA%B8%B0">스킬 찾기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/market-02.webp" class="zoom" data-cap="11 마켓 · 스킬 검색"><img src="assets/img/market-02.webp" width="1280" height="800" alt="스킬 검색" loading="lazy" /></a><figcaption><b>스킬 검색</b></figcaption></figure>
+        <figure><a href="assets/img/market-03.webp" class="zoom" data-cap="11 마켓 · 설치됨만 보기"><img src="assets/img/market-03.webp" width="1280" height="800" alt="설치됨만 보기" loading="lazy" /></a><figcaption><b>설치됨만 보기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#market--s-%EC%8A%A4%ED%82%AC-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0">스킬 설치하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/market-04.webp" class="zoom" data-cap="11 마켓 · 스킬 상세"><img src="assets/img/market-04.webp" width="1280" height="800" alt="스킬 상세" loading="lazy" /></a><figcaption><b>스킬 상세</b></figcaption></figure>
+        <figure><a href="assets/img/market-05.webp" class="zoom" data-cap="11 마켓 · 설치한 뒤"><img src="assets/img/market-05.webp" width="1280" height="800" alt="설치한 뒤" loading="lazy" /></a><figcaption><b>설치한 뒤</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#market--s-%EC%84%A4%EC%B9%98%ED%95%9C-%EC%8A%A4%ED%82%AC-%EC%93%B0%EA%B8%B0">설치한 스킬 쓰기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/market-06.webp" class="zoom" data-cap="11 마켓 · 입력창에서 스킬 고르기"><img src="assets/img/market-06.webp" width="1280" height="800" alt="입력창에서 스킬 고르기" loading="lazy" /></a><figcaption><b>입력창에서 스킬 고르기</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#market--s-%EC%A7%80%EC%8B%9D%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0">지식베이스 연동하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/market-07.webp" class="zoom" data-cap="11 마켓 · 지식베이스 연동"><img src="assets/img/market-07.webp" width="1280" height="800" alt="지식베이스 연동" loading="lazy" /></a><figcaption><b>지식베이스 연동</b></figcaption></figure>
+      </div>
+      <h3><a href="guide/boost-one-guide.html#market--s-%ED%94%8C%EB%9F%AC%EA%B7%B8%EC%9D%B8-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0">플러그인 연결하기</a></h3>
+      <div class="ggrid">
+        <figure><a href="assets/img/market-08.webp" class="zoom" data-cap="11 마켓 · 플러그인 화면"><img src="assets/img/market-08.webp" width="1280" height="800" alt="플러그인 화면" loading="lazy" /></a><figcaption><b>플러그인 화면</b></figcaption></figure>
+        <figure><a href="assets/img/market-09.webp" class="zoom" data-cap="11 마켓 · 연결 전 플러그인"><img src="assets/img/market-09.webp" width="1280" height="800" alt="연결 전 플러그인" loading="lazy" /></a><figcaption><b>연결 전 플러그인</b></figcaption></figure>
+        <figure><a href="assets/img/market-10.webp" class="zoom" data-cap="11 마켓 · 로그인이 필요한 플러그인"><img src="assets/img/market-10.webp" width="1280" height="800" alt="로그인이 필요한 플러그인" loading="lazy" /></a><figcaption><b>로그인이 필요한 플러그인</b></figcaption></figure>
+      </div>
+    </section>
+  </main>
+  <footer class="shell">원문: <a href="https://t1.kakaocdn.net/viking/boost-one-guide.html">Boost One 사용 가이드</a> (카카오, 2026-11-17 갱신본). 그림과 설명의 저작권은 원문에 있습니다.</footer>
+  <div class="lb" id="lb"><button class="prev" aria-label="이전">‹</button><img alt="" /><p></p><button class="next" aria-label="다음">›</button></div>
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('a.zoom'));
+      var lb = document.getElementById('lb'), im = lb.querySelector('img'), cap = lb.querySelector('p'), cur = -1;
+      function show(i) { cur = (i + links.length) % links.length; var a = links[cur]; im.src = a.getAttribute('href'); cap.textContent = (cur + 1) + ' / ' + links.length + ' · ' + (a.dataset.cap || ''); lb.classList.add('on'); }
+      function hide() { lb.classList.remove('on'); }
+      links.forEach(function (a, i) { a.addEventListener('click', function (e) { e.preventDefault(); show(i); }); });
+      lb.querySelector('.prev').addEventListener('click', function (e) { e.stopPropagation(); show(cur - 1); });
+      lb.querySelector('.next').addEventListener('click', function (e) { e.stopPropagation(); show(cur + 1); });
+      lb.addEventListener('click', function (e) { if (e.target === lb || e.target === im) hide(); });
+      document.addEventListener('keydown', function (e) { if (!lb.classList.contains('on')) return; if (e.key === 'Escape') hide(); if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); });
+    })();
+  </script>
+</body>
+</html>

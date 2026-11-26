@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="카카오 Boost One 사용 가이드를 바탕으로 정리한 사내 AI 업무 허브 사례" />
+  <title>Kakao Boost One 사례 | 사내 AI 업무 허브</title>
+  <style>
+    :root {
+      --ink: #191919;
+      --muted: #5f636b;
+      --line: #e3e3e0;
+      --paper: #f8f7f3;
+      --white: #ffffff;
+      --yellow: #fee500;
+      --yellow-soft: #fff7b3;
+      --brown: #3c1e1e;
+      --blue: #1f6fff;
+      --shadow: 0 18px 48px rgba(25, 25, 25, .08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; color: var(--ink); background: var(--paper);
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+      word-break: keep-all; line-height: 1.6;
+    }
+    a { color: inherit; }
+    .shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .nav { position: sticky; top: 0; z-index: 10; background: rgba(248,247,243,.9); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+    .nav-inner { height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { font-weight: 900; letter-spacing: .08em; font-size: 13px; text-transform: uppercase; text-decoration: none; }
+    .nav-links { display: flex; gap: 20px; align-items: center; font-size: 13px; font-weight: 700; }
+    .nav-links a { text-decoration: none; }
+    .btn { display: inline-block; padding: 9px 15px; border-radius: 999px; background: var(--ink); color: #fff; text-decoration: none; font-weight: 800; font-size: 13px; }
+    .btn.alt { background: var(--yellow); color: var(--brown); }
+    .hero { padding: 76px 0 40px; }
+    .eyebrow { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; font-weight: 850; letter-spacing: .05em; margin-bottom: 18px; }
+    .eyebrow::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 5px rgba(254,229,0,.35); }
+    h1 { margin: 0; font-size: clamp(38px, 6.4vw, 76px); line-height: 1.04; letter-spacing: -.045em; }
+    .lede { margin: 26px 0 0; max-width: 820px; font-size: clamp(17px, 2vw, 21px); font-weight: 600; }
+    .meta { margin-top: 18px; color: var(--muted); font-size: 13px; }
+    .hero-actions { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 44px 0 70px; }
+    .metric { background: var(--white); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+    .metric b { display: block; font-size: 40px; letter-spacing: -.04em; line-height: 1.1; }
+    .metric span { color: var(--muted); font-size: 14px; }
+    section { padding: 0 0 72px; }
+    h2 { font-size: clamp(26px, 3.4vw, 38px); letter-spacing: -.03em; margin: 0 0 10px; }
+    .sub { color: var(--muted); margin: 0 0 28px; max-width: 760px; }
+    .layout { display: grid; grid-template-columns: 70px 1fr 260px; gap: 10px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; padding: 14px; box-shadow: var(--shadow); min-height: 260px; }
+    .rail { background: var(--brown); color: #fff; border-radius: 14px; padding: 12px 6px; display: flex; flex-direction: column; gap: 8px; font-size: 11px; text-align: center; font-weight: 700; }
+    .rail div { padding: 8px 2px; border-radius: 8px; background: rgba(255,255,255,.08); }
+    .rail small { display: block; opacity: .7; font-weight: 500; font-size: 10px; }
+    .center, .side { border: 1px dashed #cfcfc9; border-radius: 14px; padding: 18px; }
+    .center h3, .side h3 { margin: 0 0 8px; font-size: 16px; }
+    .center p, .side p { margin: 0; color: var(--muted); font-size: 14px; }
+    .side { background: var(--yellow-soft); border-style: solid; border-color: #f2e27a; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .card { background: var(--white); border: 1px solid var(--line); border-radius: 18px; padding: 22px; text-decoration: none; display: block; transition: transform .15s, box-shadow .15s; }
+    a.card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .card .no { font-size: 12px; font-weight: 900; color: #8a7a00; letter-spacing: .06em; }
+    .card h3 { margin: 6px 0 8px; font-size: 19px; letter-spacing: -.02em; }
+    .card p { margin: 0; font-size: 14px; color: #3f4248; }
+    .card .count { margin-top: 12px; font-size: 12px; color: var(--muted); }
+    .points { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .point { background: var(--white); border: 1px solid var(--line); border-left: 6px solid var(--yellow); border-radius: 14px; padding: 20px 22px; }
+    .point h3 { margin: 0 0 6px; font-size: 18px; }
+    .point p { margin: 0; font-size: 14.5px; color: #3f4248; }
+    .point .src { margin-top: 10px; font-size: 12px; }
+    .point .src a { color: var(--blue); }
+    table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+    th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--line); font-size: 14.5px; vertical-align: top; }
+    th { background: #f1efe7; font-size: 13px; }
+    tr:last-child td { border-bottom: 0; }
+    .note { margin-top: 14px; font-size: 13px; color: var(--muted); }
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; counter-reset: step; }
+    .step { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 18px; position: relative; }
+    .step::before { counter-increment: step; content: counter(step); display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--yellow); color: var(--brown); font-weight: 900; font-size: 14px; margin-bottom: 10px; }
+    .step h3 { margin: 0 0 6px; font-size: 16px; }
+    .step p { margin: 0; font-size: 13.5px; color: #3f4248; }
+    .callout { background: var(--brown); color: #fff; border-radius: 20px; padding: 30px; }
+    .callout h2 { color: var(--yellow); }
+    .callout ul { margin: 0; padding-left: 20px; }
+    .callout li { margin: 8px 0; }
+    .callout a { color: var(--yellow); }
+    footer { border-top: 1px solid var(--line); padding: 28px 0 50px; color: var(--muted); font-size: 13px; }
+    @media (max-width: 900px) {
+      .metrics, .flow { grid-template-columns: repeat(2, 1fr); }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .points { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 60px 1fr; }
+      .side { grid-column: 1 / -1; }
+      .nav-links a:not(.btn) { display: none; }
+    }
+    @media (max-width: 560px) {
+      .grid, .metrics, .flow { grid-template-columns: 1fr; }
+    }
+
+    .hero-shot { margin: 0 0 72px; }
+    .hero-shot img, .shot img, .step img, .pimg img { width: 100%; height: auto; display: block; border-radius: 14px; border: 1px solid var(--line); background: #fff; }
+    .hero-shot img { border-radius: 18px; box-shadow: var(--shadow); }
+    .hero-shot figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); text-align: center; }
+    .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .shots.two { grid-template-columns: 1fr 1.6fr; margin-top: 14px; align-items: start; }
+    .shot { margin: 0; }
+    .shot figcaption { margin-top: 8px; font-size: 13px; line-height: 1.5; }
+    .shot figcaption b { display: block; font-size: 14px; }
+    .shot figcaption span { color: var(--muted); }
+    .chapter { background: var(--white); border: 1px solid var(--line); border-radius: 20px; padding: 24px; margin-bottom: 16px; }
+    .chapter-head { display: flex; justify-content: space-between; gap: 20px; align-items: flex-end; margin-bottom: 16px; }
+    .chapter-head .no { font-size: 12px; font-weight: 900; color: #8a7a00; letter-spacing: .06em; }
+    .chapter-head h3 { margin: 4px 0 6px; font-size: 22px; letter-spacing: -.02em; }
+    .chapter-head p { margin: 0; color: #3f4248; font-size: 14.5px; max-width: 700px; }
+    .chapter-links { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 800; white-space: nowrap; text-align: right; }
+    .chapter-links a { text-decoration: none; color: var(--blue); }
+    .step img { margin-bottom: 10px; }
+    .pimg { display: block; margin-bottom: 12px; }
+    a.zoom { cursor: zoom-in; display: block; }
+    .lb { position: fixed; inset: 0; background: rgba(10,10,10,.86); display: none; align-items: center; justify-content: center; flex-direction: column; z-index: 50; padding: 24px; cursor: zoom-out; }
+    .lb.on { display: flex; }
+    .lb img { max-width: min(1500px, 96vw); max-height: 86vh; border-radius: 10px; background: #fff; }
+    .lb p { color: #fff; margin: 12px 0 0; font-size: 14px; }
+    @media (max-width: 900px) { .shots { grid-template-columns: 1fr 1fr; } .chapter-head { flex-direction: column; align-items: flex-start; } .chapter-links { text-align: left; } }
+    @media (max-width: 560px) { .shots, .shots.two { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="shell nav-inner">
+      <a class="brand" href="#top">Kakao Boost One · Case</a>
+      <nav class="nav-links">
+        <a href="#layout">화면 구조</a>
+        <a href="#features">기능 지도</a>
+        <a href="#design">설계 포인트</a>
+        <a href="#apply">적용 시사점</a>
+        <a href="gallery.html">그림 전체</a>
+        <a class="btn" href="guide/boost-one-guide.html">원문 가이드</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="shell">
+    <div class="hero">
+      <div class="eyebrow">AI 업무 허브 사례 · Kakao</div>
+      <h1>흩어진 업무 채널과<br />AI 에이전트를<br />데스크톱 앱 하나로</h1>
+      <p class="lede">Boost One 은 카카오 사내 데스크톱 AI 업무 허브입니다. 카카오워크·아지트·메일·지라·위키의 글을 한 피드로 모으고, Claude·Codex·KAP 에이전트에게 일을 맡기며, 캘린더·회의록·자동 규칙·칸반·원격 제어까지 한 화면에서 다룹니다.</p>
+      <p class="meta">출처: 「Boost One 사용 가이드」(t1.kakaocdn.net/viking/boost-one-guide.html, 2026-11-17 갱신본). 이 페이지는 가이드 내용을 사례 형식으로 재구성한 요약이며, 그림 속 이름·대화·일정은 가이드가 밝힌 대로 모두 예시 데이터입니다.</p>
+      <div class="hero-actions">
+        <a class="btn alt" href="gallery.html">그림 223장 한눈에 보기</a>
+        <a class="btn" href="guide/boost-one-guide.html">원문 가이드 보기 (사본)</a>
+        <a class="btn" href="https://t1.kakaocdn.net/viking/boost-one-guide.html">원문 가이드 (원래 주소)</a>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><b>11</b><span>가이드 장 수 (시작하기 ~ 마켓)</span></div>
+      <div class="metric"><b>137</b><span>절 수 · 그림 223장</span></div>
+      <div class="metric"><b>3</b><span>실행 엔진: Claude · Codex · KAP</span></div>
+      <div class="metric"><b>5</b><span>피드 채널: 카카오워크 · 아지트 · 메일 · 지라 · 위키</span></div>
+    </div>
+
+    <figure class="hero-shot"><a href="assets/img/start-06.webp" class="zoom" data-cap="앱 전체 화면"><img src="assets/img/start-06.webp" width="1600" height="1000" alt="Boost One 앱 전체 화면" /></a><figcaption>Boost One 앱 전체 화면. ① 왼쪽 아이콘 줄 ② 설정 톱니 ③ 사이드챗 열고 닫기 (그림 속 데이터는 예시)</figcaption></figure>
+
+    <section id="layout">
+      <h2>화면 구조</h2>
+      <p class="sub">왼쪽 아이콘 줄, 가운데 작업 화면, 오른쪽 사이드챗의 3단 구성입니다. 아이콘에 마우스를 올리면 숨은 두 번째 단추(자동 규칙·작업 보드·회의록)가 나타납니다.</p>
+      <div class="layout">
+        <div class="rail">
+          <div>피드<small>+ 자동 규칙</small></div>
+          <div>업무<small>+ 작업 보드</small></div>
+          <div>바이킹</div>
+          <div>캘린더<small>+ 회의록</small></div>
+          <div>마켓</div>
+          <div>⚙︎<small>설정</small></div>
+        </div>
+        <div class="center">
+          <h3>가운데: 작업 화면</h3>
+          <p>고른 메뉴의 본 화면입니다. 업무 탭은 그 자체가 에이전트 대화 화면이고, 피드는 채널별 글 목록, 캘린더는 Google 캘린더 일정입니다. 아이콘 위 숫자는 확인 안 한 초안·요청·새 스킬 수를 뜻합니다.</p>
+        </div>
+        <div class="side">
+          <h3>오른쪽: 사이드챗</h3>
+          <p>「피드」와 「바이킹」 화면에 붙는 작은 대화창입니다. 다른 화면을 보면서 「비서」나 진행 중인 요청과 대화하고, 「크게 보기」로 큰 화면에서 이어 갑니다.</p>
+        </div>
+      </div>
+      <div class="shots two">
+        <figure class="shot"><a href="assets/img/start-07.webp" class="zoom" data-cap="피드 아이콘에 올렸을 때 나오는 자동 규칙 단추"><img src="assets/img/start-07.webp" width="840" height="800" alt="피드 아이콘에 올렸을 때 나오는 자동 규칙 단추" loading="lazy" /></a><figcaption><b>피드 아이콘에 올렸을 때 나오는 자동 규칙 단추</b><span>아이콘에 마우스를 올리면 옆에 두 번째 단추가 나타납니다. 「피드」 옆은 「자동 규칙」, 「업무」 옆은 「작업 보드」, 「캘린더」 옆은 「회의록」입니다.</span></figcaption></figure>
+        <figure class="shot"><a href="assets/img/start-08.webp" class="zoom" data-cap="사이드챗 대화 바꾸기"><img src="assets/img/start-08.webp" width="1600" height="1000" alt="사이드챗 대화 바꾸기" loading="lazy" /></a><figcaption><b>사이드챗 대화 바꾸기</b><span>사이드챗 머리의 이름(①, 처음에는 「비서」)을 누르면 대화를 바꾸는 목록이 열립니다. 「새 요청」으로 새 대화를 시작하거나, 「비서」나 진행 중인 요청을 골라 이어…</span></figcaption></figure>
+      </div>
+    </section>
+
+    <section id="onboarding">
+      <h2>처음 시작하는 흐름</h2>
+      <p class="sub">처음 실행하면 안내 상자가 하나씩 차례로 뜹니다. 앞 상자를 닫아야 다음 상자가 뜹니다.</p>
+      <div class="flow">
+        <div class="step"><a href="assets/img/start-01.webp" class="zoom" data-cap="KB 로그인 화면"><img src="assets/img/start-01.webp" width="1600" height="1000" alt="KB 로그인 화면" loading="lazy" /></a><h3>KB 계정 로그인</h3><p>사내 KB 계정 하나로 로그인합니다. 기본 브라우저에서 로그인을 마치면 앱이 저절로 넘어갑니다.</p></div>
+        <div class="step"><a href="assets/img/start-03.webp" class="zoom" data-cap="브라우저 확장 설치 안내"><img src="assets/img/start-03.webp" width="1600" height="1000" alt="브라우저 확장 설치 안내" loading="lazy" /></a><h3>Chrome 확장 설치</h3><p>웹스토어에서 확장을 추가하면 앱과 자동으로 연결됩니다. 「나중에」도 가능합니다.</p></div>
+        <div class="step"><a href="assets/img/settings-06.webp" class="zoom" data-cap="게이트웨이 연결 완료"><img src="assets/img/settings-06.webp" width="1600" height="1000" alt="게이트웨이 연결 완료" loading="lazy" /></a><h3>엔진 연결</h3><p>설정 › 연결에서 Claude 는 사내 LLM 게이트웨이로, Codex 는 설치 후 로그인합니다.</p></div>
+        <div class="step"><a href="assets/img/start-05.webp" class="zoom" data-cap="알림 켜기 안내"><img src="assets/img/start-05.webp" width="1600" height="1000" alt="알림 켜기 안내" loading="lazy" /></a><h3>알림 켜기</h3><p>시스템 설정에서 알림을 켜고 「테스트 알림」으로 배너가 보이는지 확인합니다.</p></div>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2>기능 지도</h2>
+      <p class="sub">가이드 11개 장을 장마다 대표 화면 3장으로 정리했습니다. 그림을 누르면 크게 보이고, 「그림 전체 보기」에서 가이드의 그림 223장을 장·절별로 모두 볼 수 있습니다.</p>
+      <article class="chapter" id="ch-start">
+        <div class="chapter-head">
+          <div><div class="no">01 시작하기</div><h3>첫 실행과 화면 구성</h3><p>로그인·확장·알림 안내, 아이콘 줄과 사이드챗, 연결 끊김 띠, 업데이트, 다크 테마.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-start">그림 전체 보기 (17장) →</a><a href="guide/boost-one-guide.html#page-start">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/start-06.webp" class="zoom" data-cap="앱 전체 화면"><img src="assets/img/start-06.webp" width="1600" height="1000" alt="앱 전체 화면" loading="lazy" /></a><figcaption><b>앱 전체 화면</b><span>화면은 왼쪽 아이콘 줄(①), 가운데 작업 화면, 오른쪽 사이드챗으로 나뉩니다. 왼쪽 아래 톱니(②)는 설정을 엽니다. 오른쪽 위 패널 아이콘(③)으로 사이드챗을 열고…</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/start-07.webp" class="zoom" data-cap="피드 아이콘에 올렸을 때 나오는 자동 규칙 단추"><img src="assets/img/start-07.webp" width="840" height="800" alt="피드 아이콘에 올렸을 때 나오는 자동 규칙 단추" loading="lazy" /></a><figcaption><b>피드 아이콘에 올렸을 때 나오는 자동 규칙 단추</b><span>아이콘에 마우스를 올리면 옆에 두 번째 단추가 나타납니다. 「피드」 옆은 「자동 규칙」, 「업무」 옆은 「작업 보드」, 「캘린더」 옆은 「회의록」입니다.</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/start-08.webp" class="zoom" data-cap="사이드챗 대화 바꾸기"><img src="assets/img/start-08.webp" width="1600" height="1000" alt="사이드챗 대화 바꾸기" loading="lazy" /></a><figcaption><b>사이드챗 대화 바꾸기</b><span>사이드챗 머리의 이름(①, 처음에는 「비서」)을 누르면 대화를 바꾸는 목록이 열립니다. 「새 요청」으로 새 대화를 시작하거나, 「비서」나 진행 중인 요청을 골라 이어…</span></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-settings">
+        <div class="chapter-head">
+          <div><div class="no">02 설정</div><h3>엔진·사용량·도구·권한</h3><p>Claude 사내 게이트웨이 연결, 엔진별 남은 한도와 회사 예산, 도구 켜고 끄기, 「항상 허용」 권한 회수, 지침 출처 선택.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-settings">그림 전체 보기 (23장) →</a><a href="guide/boost-one-guide.html#page-settings">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/settings-03.webp" class="zoom" data-cap="연결 페이지"><img src="assets/img/settings-03.webp" width="1600" height="1000" alt="연결 페이지" loading="lazy" /></a><figcaption><b>연결 페이지</b><span>그 아래 「실행 엔진」(②)에 Claude·Codex·KAP 이 한 장씩 있습니다. 카드마다 지금 상태(「사용 가능」·「설치 필요」·「로그인 필요」 등)와 다음에 할…</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/settings-10.webp" class="zoom" data-cap="게이트웨이 예산과 한도 상향"><img src="assets/img/settings-10.webp" width="1600" height="1000" alt="게이트웨이 예산과 한도 상향" loading="lazy" /></a><figcaption><b>게이트웨이 예산과 한도 상향</b><span>예산을 80% 넘게 쓰면 줄 오른쪽에 「한도 상향」(①)이 나타납니다. 누르면 기본 브라우저로 한도 상향을 신청하는 사내 포털이 열립니다.</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/settings-14.webp" class="zoom" data-cap="도구 페이지"><img src="assets/img/settings-14.webp" width="1600" height="1000" alt="도구 페이지" loading="lazy" /></a><figcaption><b>도구 페이지</b><span>그 아래 「도구」(②)는 에이전트가 쓸 수 있는 도구 목록입니다. 오른쪽 스위치로 도구를 켜고 끕니다.</span></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-works">
+        <div class="chapter-head">
+          <div><div class="no">03 업무 탭</div><h3>폴더 단위 에이전트 대화</h3><p>프로젝트 폴더를 골라 Claude·Codex·KAP 중 하나에게 일을 맡깁니다. 서브에이전트, 동료 초대, 터미널 대화 가져오기.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-works">그림 전체 보기 (27장) →</a><a href="guide/boost-one-guide.html#page-works">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/works-01.webp" class="zoom" data-cap="업무 탭 전체 화면"><img src="assets/img/works-01.webp" width="1600" height="1000" alt="업무 탭 전체 화면" loading="lazy" /></a><figcaption><b>업무 탭 전체 화면</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/works-05.webp" class="zoom" data-cap="엔진 고르기"><img src="assets/img/works-05.webp" width="1600" height="1000" alt="엔진 고르기" loading="lazy" /></a><figcaption><b>엔진 고르기</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/works-11.webp" class="zoom" data-cap="서브에이전트 패널"><img src="assets/img/works-11.webp" width="1600" height="1000" alt="서브에이전트 패널" loading="lazy" /></a><figcaption><b>서브에이전트 패널</b></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-board">
+        <div class="chapter-head">
+          <div><div class="no">04 작업 보드</div><h3>할 일 칸반 + 팀 판</h3><p>할 일·진행·막힘·확인·완료 5열. 카드를 지시문 슬롯에 놓으면 그 작업 대화에 지시가 갑니다. 팀 판은 「WeWork」.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-board">그림 전체 보기 (19장) →</a><a href="guide/boost-one-guide.html#page-board">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/board-02.webp" class="zoom" data-cap="작업 보드 전체 화면"><img src="assets/img/board-02.webp" width="1600" height="900" alt="작업 보드 전체 화면" loading="lazy" /></a><figcaption><b>작업 보드 전체 화면</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/board-06.webp" class="zoom" data-cap="카드를 끌 때 서는 슬롯"><img src="assets/img/board-06.webp" width="1600" height="1000" alt="카드를 끌 때 서는 슬롯" loading="lazy" /></a><figcaption><b>카드를 끌 때 서는 슬롯</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/board-10.webp" class="zoom" data-cap="WeWork 판"><img src="assets/img/board-10.webp" width="1600" height="900" alt="WeWork 판" loading="lazy" /></a><figcaption><b>WeWork 판</b></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-feed">
+        <div class="chapter-head">
+          <div><div class="no">05 피드</div><h3>모든 채널을 한 목록에</h3><p>카카오워크·아지트·메일·지라·위키 글을 읽고 답하고, ✦로 비서에게 맡겨 답장 초안을 받습니다. 본문 검색, 메일 분류 트리.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-feed">그림 전체 보기 (36장) →</a><a href="guide/boost-one-guide.html#page-feed">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/feed-01.webp" class="zoom" data-cap="피드 전체 화면"><img src="assets/img/feed-01.webp" width="1600" height="1000" alt="피드 전체 화면" loading="lazy" /></a><figcaption><b>피드 전체 화면</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/feed-25.webp" class="zoom" data-cap="✦ 메뉴 — 「초안」 탭"><img src="assets/img/feed-25.webp" width="1600" height="1000" alt="✦ 메뉴 — 「초안」 탭" loading="lazy" /></a><figcaption><b>✦ 메뉴 — 「초안」 탭</b><span>「스킬 찾기」에 이름을 치면 그 스킬로 맡길 수 있습니다.</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/feed-28.webp" class="zoom" data-cap="답장칸에 들어온 초안"><img src="assets/img/feed-28.webp" width="1120" height="480" alt="답장칸에 들어온 초안" loading="lazy" /></a><figcaption><b>답장칸에 들어온 초안</b><span>초안이 오면 답장칸에 채워집니다. 처음 적은 말은 초안을 쓸 때의 지시로 쓰입니다. 기다리는 동안 답장칸에 다른 글을 쓰고 있었으면 「바꾸기 / 뒤에 붙이기」 중에서…</span></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-calendar">
+        <div class="chapter-head">
+          <div><div class="no">06 캘린더</div><h3>Google 캘린더 내장</h3><p>일정 보기·만들기, 회의실 고르기, 쌓인 초대에 한꺼번에 답하기, 조직도로 동료·팀 일정 겹쳐 보기, 녹음 예약.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-calendar">그림 전체 보기 (24장) →</a><a href="guide/boost-one-guide.html#page-calendar">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/calendar-02.webp" class="zoom" data-cap="캘린더 첫 화면. 1 보기 전환, 2 일정 만들기, 3 초대, 4 오늘과 이전·다음 기간, 5 작은 달력, 6 사람·팀 검색"><img src="assets/img/calendar-02.webp" width="1280" height="800" alt="캘린더 첫 화면. 1 보기 전환, 2 일정 만들기, 3 초대, 4 오늘과 이전·다음 기간, 5 작은 달력, 6 사람·팀 검색" loading="lazy" /></a><figcaption><b>캘린더 첫 화면. 1 보기 전환, 2 일정 만들기, 3 초대, 4 오늘과 이전·다음 기간, 5 작은 달력, 6 사람·팀 검색</b><span>로그인하면 이번 주 일정이 보입니다. 화면 구성은 아래와 같습니다. 보기 전환: 「일」「4일」「주」「월」「일정」「+」: 새 일정 만들기「초대」: 아직 답하지 않은 초대…</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/calendar-12.webp" class="zoom" data-cap="추천 회의실 목록"><img src="assets/img/calendar-12.webp" width="1280" height="800" alt="추천 회의실 목록" loading="lazy" /></a><figcaption><b>추천 회의실 목록</b><span>「회의실」 칸 아래 「추천」에 지금 시간에 비어 있는 방이 인원에 맞춰 보입니다. 「자주 사용」에는 내가 자주 잡던 방이 보입니다. 줄을 누르면 회의실로 들어갑니다.</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/calendar-19.webp" class="zoom" data-cap="두 사람을 골라 겹쳐 본 모습"><img src="assets/img/calendar-19.webp" width="1280" height="800" alt="두 사람을 골라 겹쳐 본 모습" loading="lazy" /></a><figcaption><b>두 사람을 골라 겹쳐 본 모습</b><span>후보에서 사람을 누르면 그 사람 일정이 내 일정 옆에 다른 색으로 겹쳐 보입니다. 여러 명을 고를 수 있습니다. 공개 범위에 따라 일정 제목이 보이기도 하고…</span></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-meeting">
+        <div class="chapter-head">
+          <div><div class="no">07 회의록</div><h3>PC 안에서 받아쓰기</h3><p>녹음과 받아쓰기는 이 PC에만 남고, 요약할 때만 받아쓴 글이 고른 모델(기본 KAP)로 갑니다. 요약·결정·할 일 정리, 화자 이름 붙이기.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-meeting">그림 전체 보기 (19장) →</a><a href="guide/boost-one-guide.html#page-meeting">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/meeting-04.webp" class="zoom" data-cap="새 회의 녹음 창. 1 녹음할 소리 고르기, 2 녹음 시작"><img src="assets/img/meeting-04.webp" width="1280" height="800" alt="새 회의 녹음 창. 1 녹음할 소리 고르기, 2 녹음 시작" loading="lazy" /></a><figcaption><b>새 회의 녹음 창. 1 녹음할 소리 고르기, 2 녹음 시작</b><span>무엇을 녹음할지 고릅니다. 「마이크」: 내 마이크 소리만 「나」로 받아씁니다. 회의실에서 함께 있는 회의에 맞습니다.「마이크+시스템 소리」: 화상회의 상대 목소리를…</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/meeting-07.webp" class="zoom" data-cap="회의록 요약. 1 요약·받아쓴 글 탭, 2 회의록 도구"><img src="assets/img/meeting-07.webp" width="1280" height="800" alt="회의록 요약. 1 요약·받아쓴 글 탭, 2 회의록 도구" loading="lazy" /></a><figcaption><b>회의록 요약. 1 요약·받아쓴 글 탭, 2 회의록 도구</b><span>「요약」 탭에는 요약·결정·할 일·주제가 정리돼 있습니다. 「대화 보기」를 누르면 그 내용이 나온 받아쓴 글로 갑니다.</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/meeting-09.webp" class="zoom" data-cap="화자 칩"><img src="assets/img/meeting-09.webp" width="1280" height="800" alt="화자 칩" loading="lazy" /></a><figcaption><b>화자 칩</b><span>회의를 열면 제목 아래에 화자 칩(「화자1 3줄」 등)이 보입니다.</span></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-rules">
+        <div class="chapter-head">
+          <div><div class="no">08 자동 규칙</div><h3>조건·시각으로 자동 위임</h3><p>정한 조건의 메시지가 오거나 정한 시각이 되면 비서나 세션에 일을 건넵니다. 저장 전 시험, 켜고 끄기, 실행 기록.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-rules">그림 전체 보기 (19장) →</a><a href="guide/boost-one-guide.html#page-rules">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/rules-02.webp" class="zoom" data-cap="자동 규칙 화면. 1 거르기, 2 새 규칙, 3 켜기·끄기, 4 더 보기"><img src="assets/img/rules-02.webp" width="1280" height="800" alt="자동 규칙 화면. 1 거르기, 2 새 규칙, 3 켜기·끄기, 4 더 보기" loading="lazy" /></a><figcaption><b>자동 규칙 화면. 1 거르기, 2 새 규칙, 3 켜기·끄기, 4 더 보기</b><span>왼쪽에 규칙 목록이, 오른쪽에 고른 규칙의 내용이 보입니다. 「전체」「켜짐」「확인 필요」: 목록 거르기. 「확인 필요」는 최근 실패했거나 오류가 있는 규칙입니다.「새…</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/rules-06.webp" class="zoom" data-cap="방과 낱말을 정한 모습"><img src="assets/img/rules-06.webp" width="1280" height="800" alt="방과 낱말을 정한 모습" loading="lazy" /></a><figcaption><b>방과 낱말을 정한 모습</b><span>「어떤 메시지」의 「내용」에 걸 낱말을 씁니다. 쉼표로 여러 개를 적으면 그중 하나만 들어 있어도 걸립니다. 비워 두면 그 방의 모든 메시지가 걸립니다. 「제외 단어」에…</span></figcaption></figure>
+          <figure class="shot"><a href="assets/img/rules-10.webp" class="zoom" data-cap="지난 24시간 시험 결과"><img src="assets/img/rules-10.webp" width="1280" height="800" alt="지난 24시간 시험 결과" loading="lazy" /></a><figcaption><b>지난 24시간 시험 결과</b><span>결과에 걸린 메시지 예가 보입니다. 걸리지 말아야 할 메시지라면 그 줄의 「이 단어 빼기」를 누릅니다. 조건을 바꾼 뒤 「다시 시험」을 누릅니다.</span></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-viking">
+        <div class="chapter-head">
+          <div><div class="no">09 바이킹 탭</div><h3>사내 앱을 말로 고치기</h3><p>바이킹(사내 앱 플랫폼)에 올린 앱 하나를 골라 에이전트에게 화면·데이터 수정을 맡깁니다. 앱 방으로 동료와 함께 작업.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-viking">그림 전체 보기 (18장) →</a><a href="guide/boost-one-guide.html#page-viking">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/viking-01.webp" class="zoom" data-cap="바이킹 화면 구성"><img src="assets/img/viking-01.webp" width="1280" height="800" alt="바이킹 화면 구성" loading="lazy" /></a><figcaption><b>바이킹 화면 구성</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/viking-09.webp" class="zoom" data-cap="입력창"><img src="assets/img/viking-09.webp" width="1280" height="800" alt="입력창" loading="lazy" /></a><figcaption><b>입력창</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/viking-12.webp" class="zoom" data-cap="승인 카드"><img src="assets/img/viking-12.webp" width="1280" height="800" alt="승인 카드" loading="lazy" /></a><figcaption><b>승인 카드</b></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-remote">
+        <div class="chapter-head">
+          <div><div class="no">10 카카오워크로 원격 제어</div><h3>카카오워크로 PC에 일 맡기기</h3><p>밖에서 비서 1:1 DM으로 일을 맡기고, 대화별 세션 방을 만들고, 자리 비운 사이의 승인·질문에 카카오워크로 답합니다.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-remote">그림 전체 보기 (11장) →</a><a href="guide/boost-one-guide.html#page-remote">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/remote-01.webp" class="zoom" data-cap="원격 제어 켜기"><img src="assets/img/remote-01.webp" width="1280" height="800" alt="원격 제어 켜기" loading="lazy" /></a><figcaption><b>원격 제어 켜기</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/remote-04.webp" class="zoom" data-cap="세션 방이 이어진 대화"><img src="assets/img/remote-04.webp" width="1280" height="800" alt="세션 방이 이어진 대화" loading="lazy" /></a><figcaption><b>세션 방이 이어진 대화</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/remote-08.webp" class="zoom" data-cap="연결된 그룹방과 요청 받기"><img src="assets/img/remote-08.webp" width="1280" height="800" alt="연결된 그룹방과 요청 받기" loading="lazy" /></a><figcaption><b>연결된 그룹방과 요청 받기</b></figcaption></figure>
+        </div>
+      </article>
+      <article class="chapter" id="ch-market">
+        <div class="chapter-head">
+          <div><div class="no">11 마켓</div><h3>스킬·플러그인 공유</h3><p>동료가 올린 스킬을 설치해 주간 보고·회의록 정리 같은 반복 업무를 맡기고, 플러그인으로 Sentry·Notion 같은 외부 서비스를 연결합니다.</p></div>
+          <div class="chapter-links"><a href="gallery.html#g-market">그림 전체 보기 (10장) →</a><a href="guide/boost-one-guide.html#page-market">원문 설명 →</a></div>
+        </div>
+        <div class="shots">
+          <figure class="shot"><a href="assets/img/market-01.webp" class="zoom" data-cap="스킬 화면"><img src="assets/img/market-01.webp" width="1280" height="800" alt="스킬 화면" loading="lazy" /></a><figcaption><b>스킬 화면</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/market-04.webp" class="zoom" data-cap="스킬 상세"><img src="assets/img/market-04.webp" width="1280" height="800" alt="스킬 상세" loading="lazy" /></a><figcaption><b>스킬 상세</b></figcaption></figure>
+          <figure class="shot"><a href="assets/img/market-08.webp" class="zoom" data-cap="플러그인 화면"><img src="assets/img/market-08.webp" width="1280" height="800" alt="플러그인 화면" loading="lazy" /></a><figcaption><b>플러그인 화면</b></figcaption></figure>
+        </div>
+      </article>
+    </section>
+
+    <section id="design">
+      <h2>설계 포인트</h2>
+      <p class="sub">가이드에 적힌 동작에서 읽어 낸, 사내 AI 업무 허브를 만들 때 참고할 만한 선택들입니다.</p>
+      <div class="points">
+        <div class="point"><a href="assets/img/settings-06.webp" class="zoom pimg" data-cap="게이트웨이 연결 완료"><img src="assets/img/settings-06.webp" width="1600" height="1000" alt="게이트웨이 연결 완료" loading="lazy" /></a><h3>계정 하나, 엔진은 사내 게이트웨이로 일원화</h3><p>앱 계정은 KB 계정 하나입니다. Claude 는 사내 LLM 게이트웨이로 연결하고, 예전 방식(Bedrock 직접 연결, 팀플랜 직접 로그인)은 노란 카드로 끊기는 날을 알립니다.</p><div class="src"><a href="guide/boost-one-guide.html#settings--s-Claude-를-사내-게이트웨이로-연결하기">설정 › Claude 를 사내 게이트웨이로 연결하기</a></div></div>
+        <div class="point"><a href="assets/img/settings-10.webp" class="zoom pimg" data-cap="게이트웨이 예산과 한도 상향"><img src="assets/img/settings-10.webp" width="1600" height="1000" alt="게이트웨이 예산과 한도 상향" loading="lazy" /></a><h3>비용을 사용자 화면에서 보이게</h3><p>엔진별 남은 한도를 「N% 남음」 막대로 보여 주고, 게이트웨이 예산(예: $850 / $1,000 · 30일)을 표시합니다. 80%를 넘으면 「한도 상향」 신청 단추가 나타납니다.</p><div class="src"><a href="guide/boost-one-guide.html#settings--s-사용량-보기">설정 › 사용량 보기</a></div></div>
+        <div class="point"><a href="assets/img/settings-21.webp" class="zoom pimg" data-cap="항상 허용 목록"><img src="assets/img/settings-21.webp" width="1600" height="1000" alt="항상 허용 목록" loading="lazy" /></a><h3>사람이 승인하고, 권한은 되돌릴 수 있게</h3><p>에이전트 동작은 승인 카드로 묻고, 「항상 허용」으로 넣은 권한은 목록에서 한 줄씩 「권한 빼기」로 회수합니다. 다른 앱 조작은 기본으로 꺼져 있습니다.</p><div class="src"><a href="guide/boost-one-guide.html#settings--s-항상-허용-권한-빼기">설정 › 「항상 허용」 권한 빼기</a></div></div>
+        <div class="point"><a href="assets/img/settings-20.webp" class="zoom pimg" data-cap="지침 출처"><img src="assets/img/settings-20.webp" width="1600" height="1000" alt="지침 출처" loading="lazy" /></a><h3>기존 지침 파일을 그대로 재사용</h3><p>에이전트가 읽는 전역 지침을 Codex(AGENTS.md)나 Claude(CLAUDE.md)와 동기화하거나 직접 파일을 고릅니다. 이미 쓰던 규칙을 새로 쓰지 않아도 됩니다.</p><div class="src"><a href="guide/boost-one-guide.html#settings--s-지침-출처-고르기">설정 › 지침 출처 고르기</a></div></div>
+        <div class="point"><a href="assets/img/meeting-03.webp" class="zoom pimg" data-cap="회의 녹음 개인정보 안내"><img src="assets/img/meeting-03.webp" width="1280" height="800" alt="회의 녹음 개인정보 안내" loading="lazy" /></a><h3>민감 데이터는 PC 밖으로 내보내지 않기</h3><p>회의 녹음과 받아쓰기는 이 PC 안에서만 처리합니다. 요약할 때만 받아쓴 글이 고른 모델(기본 KAP)로 갑니다.</p><div class="src"><a href="guide/boost-one-guide.html#page-meeting">07 회의록</a></div></div>
+        <div class="point"><a href="assets/img/feed-28.webp" class="zoom pimg" data-cap="답장칸에 들어온 초안"><img src="assets/img/feed-28.webp" width="1120" height="480" alt="답장칸에 들어온 초안" loading="lazy" /></a><h3>답장은 초안까지만 자동, 보내기는 사람</h3><p>피드에서 ✦로 비서에게 맡기면 답장 초안을 받아 고친 뒤 보냅니다. 자동 규칙도 저장 전에 「시험」으로 결과를 먼저 봅니다.</p><div class="src"><a href="guide/boost-one-guide.html#page-feed">05 피드</a> · <a href="guide/boost-one-guide.html#page-rules">08 자동 규칙</a></div></div>
+        <div class="point"><a href="assets/img/board-06.webp" class="zoom pimg" data-cap="카드를 끌 때 서는 슬롯"><img src="assets/img/board-06.webp" width="1600" height="1000" alt="카드를 끌 때 서는 슬롯" loading="lazy" /></a><h3>반복 지시는 끌어 놓기 한 번으로</h3><p>작업 보드의 「진행」 열 위 슬롯에 지시문이나 스킬을 정해 두고, 카드를 놓으면 그 작업 대화에 지시가 갑니다. 여러 카드를 골라 한꺼번에 보낼 수도 있습니다.</p><div class="src"><a href="guide/boost-one-guide.html#page-board">04 작업 보드</a></div></div>
+        <div class="point"><a href="assets/img/remote-08.webp" class="zoom pimg" data-cap="연결된 그룹방과 요청 받기"><img src="assets/img/remote-08.webp" width="1280" height="800" alt="연결된 그룹방과 요청 받기" loading="lazy" /></a><h3>메신저를 원격 리모컨으로</h3><p>PC 앞에 없어도 카카오워크 DM으로 일을 맡기고 승인에 답합니다. 그룹방에서는 동료가 「@비서」로 내 에이전트에게 부탁할 수 있습니다.</p><div class="src"><a href="guide/boost-one-guide.html#page-remote">10 카카오워크로 원격 제어</a></div></div>
+      </div>
+    </section>
+
+    <section id="mapping">
+      <h2>AI 실습 용어와 Boost One 메뉴 연결</h2>
+      <p class="sub">팀 AI 실습에서 쓰는 개념이 Boost One 에서 어느 메뉴에 해당하는지 짝지었습니다.</p>
+      <table>
+        <thead><tr><th>실습 용어</th><th>Boost One 메뉴</th><th>하는 일</th></tr></thead>
+        <tbody>
+          <tr><td>지침 (AGENTS.md / CLAUDE.md)</td><td>설정 › 에이전트 › 지침 출처</td><td>에이전트가 대화를 시작할 때 읽는 전역 규칙 파일을 고릅니다.</td></tr>
+          <tr><td>스킬</td><td>마켓 › 스킬</td><td>자주 하는 일을 정해진 방식으로 맡기도록 스킬을 설치하고 공유합니다.</td></tr>
+          <tr><td>예약 작업</td><td>자동 규칙 (정해진 시각)</td><td>정한 시각이나 조건이 되면 비서나 세션에 일을 건넵니다.</td></tr>
+          <tr><td>팀 작업</td><td>작업 보드 › WeWork</td><td>팀·프로젝트 공간의 공유 판에서 담당자와 상태를 관리합니다.</td></tr>
+        </tbody>
+      </table>
+      <p class="note">짝짓기는 작성자가 가이드 내용을 보고 정리한 것이며, 공식 가이드의 표현은 아닙니다.</p>
+    </section>
+
+    <section id="apply">
+      <div class="callout">
+        <h2>우리 조직에 적용한다면</h2>
+        <ul>
+          <li><b>입구부터 하나로:</b> 메신저·메일·이슈·위키를 한 피드로 모으는 것이 에이전트 활용의 출발점입니다. 먼저 어떤 채널의 데이터를 연결할 수 있는지(API·권한)부터 확인합니다.</li>
+          <li><b>비용과 권한을 사용자 화면에:</b> 게이트웨이 예산·한도 표시와 「항상 허용」 회수 기능처럼, 통제 장치를 관리자 콘솔이 아니라 사용자 앱 안에 두는 방식이 확산에 유리합니다.</li>
+          <li><b>스킬과 규칙은 공유 자산으로:</b> 마켓(스킬·플러그인)과 지침 동기화처럼, 한 사람이 만든 업무 방식을 팀이 바로 받아 쓰는 구조를 함께 설계합니다.</li>
+        </ul>
+        <p class="note" style="color:#e9dcdc">위 시사점은 작성자의 제안입니다. Boost One 의 사용 대상(전사 배포 여부), 데이터 수집 방식, 커넥터 접근 방식은 가이드에 나와 있지 않아 확인이 필요합니다.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      원문: <a href="https://t1.kakaocdn.net/viking/boost-one-guide.html">Boost One 사용 가이드</a> (카카오). 저장소의 <a href="guide/boost-one-guide.html">guide/boost-one-guide.html</a> 은 2026-11-17 갱신본의 사본입니다. 최신 내용은 원래 주소를 확인하세요.
+    </div>
+  </footer>
+
+  <div class="lb" id="lb"><img alt="" /><p></p></div>
+  <script>
+    (function () {
+      var lb = document.getElementById('lb'), im = lb.querySelector('img'), cap = lb.querySelector('p');
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a.zoom'); if (!a) return;
+        e.preventDefault(); im.src = a.getAttribute('href'); cap.textContent = a.dataset.cap || ''; lb.classList.add('on');
+      });
+      lb.addEventListener('click', function () { lb.classList.remove('on'); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.classList.remove('on'); });
+    })();
+  </script>
+</body>
+</html>
